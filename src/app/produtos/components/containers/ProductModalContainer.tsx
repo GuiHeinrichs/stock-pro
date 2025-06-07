@@ -62,8 +62,8 @@ const ProductModalContainer = ({
   }, [modalMode, selectedProduct]);
 
   const handleInputChange = (field: string, value: any) => {
-    if (field === "detail") {
-      setNewProduct((prev) => ({ ...prev, detail: value }));
+    if (field === "ProductDetail") {
+      setNewProduct((prev) => ({ ...prev, ProductDetail: value }));
     } else {
       setNewProduct((prev) => ({ ...prev, [field]: value }));
     }

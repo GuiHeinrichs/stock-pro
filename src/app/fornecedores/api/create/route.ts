@@ -7,8 +7,15 @@ export async function POST(request: Request) {
 
   try {
     const data = await request.json();
+    const { supplierInfo, ...supplierData } = data;
     const supplier = await prisma.supplier.create({
-      data,
+      data: {
+        ...supplierData,
+        supplierInfo: supplierInfo
+          ? { create: supplierInfo }
+          : undefined,
+      },
+      include: { supplierInfo: true },
     });
 
     return NextResponse.json(

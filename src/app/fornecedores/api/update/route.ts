@@ -6,7 +6,8 @@ export async function PUT(request: Request) {
   await SessionAuth();
 
   try {
-    const { id, name, email, phone, address } = await request.json();
+    const data = await request.json();
+    const { id, supplierInfo, ...supplierData } = data;
 
     if (!id) {
       return NextResponse.json(
@@ -16,15 +17,14 @@ export async function PUT(request: Request) {
     }
 
     const updatedSupplier = await prisma.supplier.update({
-      where: {
-        id: id,
-      },
+      where: { id },
       data: {
-        name,
-        email,
-        phone,
-        address,
+        ...supplierData,
+        supplierInfo: supplierInfo
+          ? { upsert: { create: supplierInfo, update: supplierInfo } }
+          : undefined,
       },
+      include: { supplierInfo: true },
     });
 
     return NextResponse.json(

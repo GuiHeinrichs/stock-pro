@@ -6,7 +6,9 @@ export async function GET() {
   await SessionAuth();
 
   try {
-    const suppliers = await prisma.supplier.findMany();
+    const suppliers = await prisma.supplier.findMany({
+      include: { supplierInfo: true, products: true },
+    });
 
     return NextResponse.json(suppliers, { status: 200 });
   } catch (error) {

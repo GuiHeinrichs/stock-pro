@@ -15,7 +15,9 @@ export default function Suppliers() {
   const [messageApi, contextHolder] = message.useMessage();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalMode, setModalMode] = useState<ModalMode>(ModalMode.CREATE);
-  const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null);
+  const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(
+    null
+  );
   const [refetchTrigger, setRefetchTrigger] = useState(false);
 
   const handleDeleteSupplier = async (toDelete: Supplier) => {
@@ -27,9 +29,12 @@ export default function Suppliers() {
       okButtonProps: { danger: true },
       onOk: async () => {
         try {
-          const response = await fetch(`/fornecedores/api/delete?id=${toDelete.id}`, {
-            method: "DELETE",
-          });
+          const response = await fetch(
+            `/fornecedores/api/delete?id=${toDelete.id}`,
+            {
+              method: "DELETE",
+            }
+          );
           const data = await response.json();
           if (data) {
             const successData: ValidityMessage = {
@@ -74,9 +79,13 @@ export default function Suppliers() {
   const filteredSuppliers = useMemo(() => {
     return suppliers.filter((s) => {
       const nameMatch =
-        filters.name === "" || s.name.toLowerCase().includes(filters.name.toLowerCase());
-      const cpfMatch = filters.cpfCnpj === "" || s.cpfCnpj.includes(filters.cpfCnpj);
-      const cityMatch = filters.city === "" || (s.city || "").toLowerCase().includes(filters.city.toLowerCase());
+        filters.name === "" ||
+        s.name.toLowerCase().includes(filters.name.toLowerCase());
+      const cpfMatch =
+        filters.cpfCnpj === "" || s.cpfCnpj.includes(filters.cpfCnpj);
+      const cityMatch =
+        filters.city === "" ||
+        (s.city || "").toLowerCase().includes(filters.city.toLowerCase());
       return nameMatch && cpfMatch && cityMatch;
     });
   }, [suppliers, filters]);
@@ -89,7 +98,9 @@ export default function Suppliers() {
       key: "contact",
       render: (_: any, record: Supplier) => (
         <span>
-          {record.mainContactName} {record.mainContactPhone && ` - ${record.mainContactPhone}`} {record.mainContactEmail && ` - ${record.mainContactEmail}`}
+          {record.mainContactName}{" "}
+          {record.mainContactPhone && ` - ${record.mainContactPhone}`}{" "}
+          {record.mainContactEmail && ` - ${record.mainContactEmail}`}
         </span>
       ),
     },
@@ -137,14 +148,16 @@ export default function Suppliers() {
   return (
     <div className="px-4 py-4 md:px-10 xl:px-20 space-y-8 bg-[#f9f9f9] min-h-screen">
       {contextHolder}
-      <div className="bg-white p-4 rounded-lg shadow">
-        <Form layout="inline" className="flex flex-wrap gap-4 mb-4">
+      <div className="bg-white rounded-lg p-4 shadow-sm">
+        <Form layout="inline" className="flex flex-wrap">
           <Form.Item label="Nome/Razão Social">
             <Search
               placeholder="Buscar por nome"
               allowClear
               value={filters.name}
-              onChange={(e) => setFilters((f) => ({ ...f, name: e.target.value }))}
+              onChange={(e) =>
+                setFilters((f) => ({ ...f, name: e.target.value }))
+              }
               style={{ width: 200 }}
             />
           </Form.Item>
@@ -153,7 +166,9 @@ export default function Suppliers() {
               placeholder="CPF ou CNPJ"
               allowClear
               value={filters.cpfCnpj}
-              onChange={(e) => setFilters((f) => ({ ...f, cpfCnpj: e.target.value }))}
+              onChange={(e) =>
+                setFilters((f) => ({ ...f, cpfCnpj: e.target.value }))
+              }
               style={{ width: 160 }}
             />
           </Form.Item>
@@ -162,11 +177,15 @@ export default function Suppliers() {
               placeholder="Cidade"
               allowClear
               value={filters.city}
-              onChange={(e) => setFilters((f) => ({ ...f, city: e.target.value }))}
+              onChange={(e) =>
+                setFilters((f) => ({ ...f, city: e.target.value }))
+              }
               style={{ width: 160 }}
             />
           </Form.Item>
         </Form>
+      </div>
+      <div className="bg-white p-4 rounded-lg shadow">
         <Table
           columns={columns}
           bordered

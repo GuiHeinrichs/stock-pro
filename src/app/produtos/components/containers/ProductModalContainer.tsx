@@ -2,6 +2,7 @@
 import { Dispatch, SetStateAction, useState, useEffect } from "react";
 import ProductModal from "../presentations/ProductModal";
 import { useCategories } from "@/app/hooks/categories/useCategories";
+import { useSuppliers } from "@/app/hooks/suppliers/useSuppliers";
 import { Product } from "@/types/Product";
 import { ValidityMessage } from "@/types/ValidityMessage";
 import { ValidityMessageValidation } from "@/app/lib/createValidityMessage";
@@ -50,7 +51,8 @@ const ProductModalContainer = ({
   const [isModalLoading, setIsModalLoading] = useState(false);
   const [newProduct, setNewProduct] = useState<Product>(initialProductState);
 
-  const { categories, isLoading } = useCategories();
+  const { categories, isLoadingCategories } = useCategories();
+  const { suppliers, isLoadingSuppliers } = useSuppliers();
 
   useEffect(() => {
     if (
@@ -182,7 +184,9 @@ const ProductModalContainer = ({
       isModalLoading={isModalLoading}
       newProduct={newProduct}
       categories={categories}
-      isLoading={isLoading}
+      suppliers={suppliers}
+      isLoadingCategories={isLoadingCategories}
+      isLoadingSuppliers={isLoadingSuppliers}
       handleInputChange={handleInputChange}
       handleOk={handleOk}
       handleCancel={handleCancel}

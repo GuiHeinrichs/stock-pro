@@ -12,13 +12,16 @@ import {
 import { Category } from "@/types/Category";
 import { Props } from "@/types/ProductProps";
 import { ModalMode } from "@/types/ModalMode";
+import { Supplier } from "@/types/Supplier";
 
 const ProductModal = ({
   isModalOpen,
   isModalLoading,
   newProduct,
   categories,
-  isLoading,
+  suppliers,
+  isLoadingCategories,
+  isLoadingSuppliers,
   handleInputChange,
   handleOk,
   handleCancel,
@@ -107,11 +110,30 @@ const ProductModal = ({
                 placeholder="Selecione uma categoria"
                 value={newProduct.categoryId}
                 onChange={(value) => handleInputChange("categoryId", value)}
-                loading={isLoading}
+                loading={isLoadingCategories}
                 allowClear
-                options={categories?.map((category: Category) => ({
+                options={(categories ?? []).map((category: Category) => ({
                   label: category.title,
                   value: category.id,
+                }))}
+                disabled={modalMode === ModalMode.VIEW}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Fornecedor"
+              hasFeedback
+              validateStatus={validateRequiredInputs(newProduct.supplierId)}
+              required
+            >
+              <Select
+                placeholder="Selecione um fornecedor"
+                value={newProduct.supplierId}
+                onChange={(value) => handleInputChange("supplierId", value)}
+                loading={isLoadingSuppliers}
+                allowClear
+                options={(suppliers ?? []).map((supplier: Supplier) => ({
+                  label: supplier.name,
+                  value: supplier.id,
                 }))}
                 disabled={modalMode === ModalMode.VIEW}
               />

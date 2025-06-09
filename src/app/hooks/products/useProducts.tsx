@@ -2,10 +2,10 @@ import useSWR from "swr";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-export const useCategories = () => {
+export const useProducts = () => {
   const { data, error, isLoading, mutate } = useSWR(
-    "/categorias/api/get",
+    "/produtos/api/get",
     fetcher
   );
-  return { categories: data, error, isLoadingCategories: isLoading, mutate };
+  return { data, error, isLoading, mutate };
 };

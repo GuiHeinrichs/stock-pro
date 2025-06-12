@@ -1,5 +1,5 @@
 "use client";
-import { Table, Button, Tooltip, Input, Form, message, Modal } from "antd";
+import { Table, Button, Tooltip, Input, Form, message, Modal, Badge } from "antd";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
 import { Supplier } from "@/types/Supplier";
@@ -105,6 +105,25 @@ export default function Suppliers() {
       ),
     },
     { title: "Cidade", dataIndex: "city", key: "city" },
+    {
+      title: "Produtos",
+      key: "products",
+      render: (_: any, record: Supplier) => (
+        <div className="flex flex-wrap gap-1">
+          {record.products && record.products.length > 0 ? (
+            record.products.map((product) => (
+              <Badge
+                key={product.id}
+                color="#F1592A"
+                text={product.name}
+              />
+            ))
+          ) : (
+            "-"
+          )}
+        </div>
+      ),
+    },
     {
       title: "Ações",
       key: "actions",

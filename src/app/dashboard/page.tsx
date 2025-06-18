@@ -25,71 +25,25 @@ import {
 } from "recharts";
 
 import DashboardCard from "@/app/components/DashboardCard";
+import { useDashboardData } from "@/app/hooks/dashboard/useDashboardData";
 
 export default function Dashboard() {
-  const recentMovements = [
-    {
-      product: "Teclado USB",
-      type: "Entrada",
-      quantity: 10,
-      date: "2025-05-18 09:21",
-    },
-    {
-      product: 'Monitor 24"',
-      type: "Saída",
-      quantity: 2,
-      date: "2025-05-18 08:45",
-    },
-    {
-      product: "Mouse Gamer",
-      type: "Entrada",
-      quantity: 15,
-      date: "2025-05-17 14:10",
-    },
-  ];
+  const { data } = useDashboardData();
 
-  const weeklyData = [
-    { day: "Seg", entradas: 40, saidas: 24 },
-    { day: "Ter", entradas: 30, saidas: 18 },
-    { day: "Qua", entradas: 20, saidas: 32 },
-    { day: "Qui", entradas: 27, saidas: 20 },
-    { day: "Sex", entradas: 35, saidas: 22 },
-    { day: "Sáb", entradas: 45, saidas: 28 },
-    { day: "Dom", entradas: 25, saidas: 15 },
-  ];
+  const recentMovements = data?.recentMovements ?? [];
+  const weeklyData = data?.weeklyData ?? [];
 
-  const evolucaoMovimentacoes = [
-    { day: "Seg", entradas: 40, saidas: 24 },
-    { day: "Ter", entradas: 30, saidas: 18 },
-    { day: "Qua", entradas: 20, saidas: 32 },
-    { day: "Qui", entradas: 27, saidas: 20 },
-    { day: "Sex", entradas: 35, saidas: 22 },
-    { day: "Sáb", entradas: 45, saidas: 28 },
-    { day: "Dom", entradas: 25, saidas: 15 },
-  ];
 
-  const topProducts = [
-    { name: "Teclado USB", movimentado: 50 },
-    { name: 'Monitor 24"', movimentado: 38 },
-    { name: "Mouse Gamer", movimentado: 60 },
-    { name: "HD Externo", movimentado: 22 },
-  ];
+  const estoqueHistorico = data?.estoqueHistorico ?? [];
+  const categoriasEstoque = data?.categoriasEstoque ?? [];
+  const evolucaoMovimentacoes = data?.evolucaoMovimentacoes ?? [];
+  const topProducts = data?.topProducts ?? [];
 
-  const estoqueHistorico = [
-    { day: "Seg", estoque: 1100 },
-    { day: "Ter", estoque: 1120 },
-    { day: "Qua", estoque: 1070 },
-    { day: "Qui", estoque: 1150 },
-    { day: "Sex", estoque: 1200 },
-    { day: "Sáb", estoque: 1250 },
-    { day: "Dom", estoque: 1230 },
-  ];
-
-  const categoriasEstoque = [
-    { categoria: "Periféricos", valor: 800 },
-    { categoria: "Monitores", valor: 400 },
-    { categoria: "Acessórios", valor: 363 },
-  ];
+  const totalStock = data?.totalStock ?? 0;
+  const recentEntries = data?.recentEntries ?? 0;
+  const recentExits = data?.recentExits ?? 0;
+  const criticalStock = data?.criticalStock ?? 0;
+  const totalStockValue = data?.totalStockValue ?? 0;
 
   const COLORS = ["#F1592A", "#2196F3", "#FFC107"];
 
@@ -100,35 +54,38 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-8">
           <DashboardCard
             title="Estoque Total"
-            value="1.563"
+            value={totalStock.toString()}
             color="#F1592A"
             resize={false}
             icon={<PackageCheck size={28} />}
           />
           <DashboardCard
             title="Entradas Recentes"
-            value="+240"
+            value={`+${recentEntries}`}
             color="#4CAF50"
             resize={false}
             icon={<ArrowDown size={28} />}
           />
           <DashboardCard
             title="Saídas Recentes"
-            value="-120"
+            value={`-${recentExits}`}
             color="#F44336"
             resize={false}
             icon={<ArrowUp size={28} />}
           />
           <DashboardCard
             title="Estoque Crítico"
-            value="5"
+            value={criticalStock.toString()}
             color="#FFC107"
             resize={false}
             icon={<AlertTriangle size={28} />}
           />
           <DashboardCard
             title="Valor Total em Estoque"
-            value="R$ 18.320,00"
+            value={totalStockValue.toLocaleString("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            })}
             color="#2196F3"
             resize={true}
             icon={<Warehouse size={28} />}
@@ -171,8 +128,14 @@ export default function Dashboard() {
           <h2 className="text-lg font-bold text-[#1F1F1F] mb-2">
             Produto em Destaque
           </h2>
-          <p className="text-2xl font-bold text-[#F1592A] mb-1">Mouse Gamer</p>
-          <span className="text-[#666666]">Movimentado 60x na semana</span>
+          <p className="text-2xl font-bold text-[#F1592A] mb-1">
+            {topProducts[0]?.name ?? "-"}
+          </p>
+          {topProducts[0] && (
+            <span className="text-[#666666]">
+              Movimentado {topProducts[0].movimentado}x na semana
+            </span>
+          )}
         </div>
 
         {/* Pie Chart: Distribuição por Categoria */}

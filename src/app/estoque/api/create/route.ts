@@ -5,7 +5,9 @@ import SessionAuth from "@/app/lib/sessionAuth";
 export async function POST(request: Request) {
   await SessionAuth();
   try {
-    const { productId, type, quantity } = await request.json();
+    // Parse request body only once to avoid "Body has already been read" errors
+    const data = await request.json();
+    const { productId, type, quantity } = data;
 
     if (!productId || !type || !quantity) {
       return NextResponse.json(
@@ -14,7 +16,6 @@ export async function POST(request: Request) {
       );
     }
 
-    const data = request.json();
     const movement = await StockMovementService.create(data);
 
     return NextResponse.json(movement, { status: 201 });

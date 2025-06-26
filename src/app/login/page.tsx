@@ -68,27 +68,34 @@ export default function Login() {
                   value={email}
                 />
               </div>
-              <div className="relative">
+              <div>
                 <label
                   htmlFor="password"
                   className="block text-sm font-medium text-[#666666] mb-1"
                 >
                   Senha
                 </label>
-                <Input.Password
-                  id="password"
-                  placeholder={showPassword ? "" : "••••••••"}
-                  className="w-full px-4 py-2 border border-[#E0E0E0] rounded focus:outline-none focus:ring-2 focus:ring-primary text-[#1F1F1F]"
-                  onChange={(e) => setPassword(e.target.value)}
-                  value={password}
-                  visibilityToggle={{
-                    visible: showPassword,
-                    onVisibleChange: (vis) => setShowPassword(vis),
-                  }}
-                  iconRender={(visible) =>
-                    visible ? <EyeOff size={18} /> : <Eye size={18} />
-                  }
-                />
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    className="w-full px-4 py-2 border border-[#E0E0E0] rounded focus:outline-none focus:ring-2 focus:ring-primary text-[#1F1F1F]"
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((v) => !v)}
+                    className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
+                  >
+                    {showPassword ? (
+                      <EyeOff size={18} />
+                    ) : (
+                      <Eye size={18} />
+                    )}
+                  </button>
+                </div>
               </div>
               <button
                 type="submit"

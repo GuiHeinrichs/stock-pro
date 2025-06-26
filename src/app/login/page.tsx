@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { Input } from "antd";
 import { signIn } from "next-auth/react";
 import { Toaster, toast } from "sonner";
 
@@ -58,12 +59,13 @@ export default function Login() {
                 >
                   E-mail
                 </label>
-                <input
+                <Input
                   id="email"
                   type="email"
                   placeholder="seu@email.com"
                   className="w-full px-4 py-2 border border-[#E0E0E0] rounded focus:outline-none focus:ring-2 focus:ring-primary text-[#1F1F1F]"
                   onChange={(e) => setEmail(e.target.value)}
+                  value={email}
                 />
               </div>
               <div className="relative">
@@ -73,20 +75,20 @@ export default function Login() {
                 >
                   Senha
                 </label>
-                <input
+                <Input.Password
                   id="password"
-                  type={showPassword ? "text" : "password"}
                   placeholder={showPassword ? "" : "••••••••"}
-                  className="w-full px-4 py-2 border border-[#E0E0E0] rounded focus:outline-none focus:ring-2 focus:ring-primary text-[#1F1F1F] pr-10"
+                  className="w-full px-4 py-2 border border-[#E0E0E0] rounded focus:outline-none focus:ring-2 focus:ring-primary text-[#1F1F1F]"
                   onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+                  visibilityToggle={{
+                    visible: showPassword,
+                    onVisibleChange: (vis) => setShowPassword(vis),
+                  }}
+                  iconRender={(visible) =>
+                    visible ? <EyeOff size={18} /> : <Eye size={18} />
+                  }
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-[2.7rem] right-3 flex items-center justify-center text-gray-500 cursor-pointer"
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
               </div>
               <button
                 type="submit"

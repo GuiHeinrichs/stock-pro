@@ -1,10 +1,12 @@
 import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import Dashboard from "./dashboard/page";
 
 export default async function Home() {
-  const session = await getServerSession();
-  return (
-    <div className="flex flex-col justify-center items-center h-screen w-full">
-      {session?.user.email}
-    </div>
-  );
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    redirect("/login");
+  }
+  return <Dashboard />;
 }

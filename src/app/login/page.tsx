@@ -21,7 +21,9 @@ export default function Login() {
         password,
       });
 
-      if (!result?.error) {
+      if (result?.error) {
+        toast.error("Usuário ou senha incorretos.");
+      } else {
         window.location.href = result?.url || "/";
         toast.success("Login realizado com sucesso!");
       }

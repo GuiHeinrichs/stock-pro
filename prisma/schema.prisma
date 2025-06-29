@@ -91,7 +91,7 @@ model User {
   name      String
   email     String   @unique
   password  String
-  role      String   @default("user")
+  role      Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

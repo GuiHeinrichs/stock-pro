@@ -33,7 +33,7 @@ export const authOptions: AuthOptions = {
           id: user.id.toString(),
           name: user.name,
           email: user.email,
-          role: user.role,
+          role: Number(user.role),
         };
       },
     }),
@@ -47,7 +47,7 @@ export const authOptions: AuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (token?.role) session.user.role = token.role as string;
+      if (token?.role !== undefined) session.user.role = token.role as number;
       return session;
     },
   },

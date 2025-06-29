@@ -1,5 +1,7 @@
+"use client";
 import { Bell, Search, Sun, PanelLeft } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useDarkMode } from "../hooks/useDarkMode";
 
 type HeaderProps = {
   onMenuClick: () => void;
@@ -9,6 +11,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
   const pathname =
     usePathname().replace("/", "").charAt(0).toUpperCase() +
     usePathname().slice(2);
+  const { toggleDarkMode } = useDarkMode();
 
   return (
     <header className="w-full pl-22 h-16 bg-white border-b border-[#E0E0E0] flex items-center justify-between px-6 shadow-sm z-10 sticky top-0">
@@ -36,7 +39,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
         <button>
           <Bell className="w-5 h-5 text-[#666] hover:text-[#F1592A] transition-all cursor-pointer ease-in hover:-translate-y-[0.1rem]" />
         </button>
-        <button>
+        <button onClick={toggleDarkMode}>
           <Sun className="w-5 h-5 text-[#666] hover:text-[#F1592A] transition-all cursor-pointer ease-in hover:-translate-y-[0.1rem]" />
         </button>
       </div>

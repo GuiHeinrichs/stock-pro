@@ -6,6 +6,7 @@ export const useDarkMode = () => {
 
   useEffect(() => {
     const stored = localStorage.getItem('theme')
+    console.log(stored)
     if (stored === 'dark') {
       setIsDarkMode(true)
       document.documentElement.classList.add('dark')

@@ -1,8 +1,10 @@
 "use client";
-import { useState } from "react";
+import { Table, Select, message } from "antd";
+import { useUsers } from "@/app/hooks/users/userUsers";
 import { UserRole } from "@/types/UserRole";
+import {User} from "@/types/User";
 
-const modules = ["Produtos", "Movimentações", "Categorias", "Fornecedores"];
+const { Option } = Select;
 
 const roles = [
   { id: UserRole.OPERADOR, name: "Operador" },
@@ -10,58 +12,56 @@ const roles = [
   { id: UserRole.ADMIN, name: "Administrador" },
 ];
 
-type PermissionsState = Record<number, Record<string, boolean>>;
-
 export default function PermissionsPanel() {
-  const [permissions, setPermissions] = useState<PermissionsState>(() => {
-    const initial: PermissionsState = {};
-    roles.forEach((r) => {
-      initial[r.id] = {} as Record<string, boolean>;
-      modules.forEach((m) => {
-        initial[r.id][m] = r.id === UserRole.ADMIN;
-      });
-    });
-    return initial;
-  });
+  const { users = [], mutate } = useUsers();
+  const [messageApi, contextHolder] = message.useMessage();
 
-  const toggle = (roleId: number, module: string) => {
-    setPermissions((prev) => ({
-      ...prev,
-      [roleId]: { ...prev[roleId], [module]: !prev[roleId][module] },
-    }));
+  const handleChangeRole = async (id: number, role: number) => {
+    try {
+      const res = await fetch("/permissoes/api/update-role", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, role }),
+      });
+      if (!res.ok) throw new Error("fail");
+      await mutate();
+      messageApi.success("Papel atualizado com sucesso.");
+    } catch (error) {
+      console.error(error);
+      messageApi.error("Erro ao atualizar papel.");
+    }
   };
 
-  return (
-    <div className="p-6 bg-white border border-[#E0E0E0] rounded-2xl shadow-md">
-      <h2 className="text-lg font-bold mb-4">Controle Avançado de Permissões</h2>
-      <table className="w-full text-sm">
-        <thead>
-          <tr>
-            <th className="p-2 text-left">Módulo</th>
+  const columns = [
+    { title: "Nome", dataIndex: "name", key: "name" },
+    { title: "E-mail", dataIndex: "email", key: "email" },
+    {
+      title: "Papel",
+      key: "role",
+      render: (_: User, record: User) => (
+          <Select
+              value={record.role}
+              onChange={(value) => handleChangeRole(record.id, value)}
+          >
             {roles.map((role) => (
-              <th key={role.id} className="p-2 text-center">
-                {role.name}
-              </th>
+                <Option key={role.id} value={role.id}>
+                  {role.name}
+                </Option>
             ))}
-          </tr>
-        </thead>
-        <tbody>
-          {modules.map((module) => (
-            <tr key={module} className="border-t">
-              <td className="p-2 font-medium">{module}</td>
-              {roles.map((role) => (
-                <td key={role.id} className="p-2 text-center">
-                  <input
-                    type="checkbox"
-                    checked={permissions[role.id][module]}
-                    onChange={() => toggle(role.id, module)}
-                  />
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </Select>
+      ),
+    },
+  ];
+
+  return (
+      <div className="p-6 bg-white border border-[#E0E0E0] rounded-2xl shadow-md">
+        {contextHolder}
+        <h2 className="text-lg font-bold mb-4">Permissão de usuários</h2>
+        <Table
+            dataSource={users.map((u: User) => ({ ...u, key: u.id }))}
+            columns={columns}
+            pagination={false}
+        />
+      </div>
   );
 }

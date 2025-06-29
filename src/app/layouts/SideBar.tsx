@@ -74,7 +74,7 @@ export default function SideBar({ open, onClose }: SideBarProps) {
           </Link>
           <Link
             href="/fornecedores"
-            className={`flex items-center gap-3 py-2 px-3 rounded-lg text-[#666] hover:bg-[#F1592A]/10 hover:text-[#F1592A] transition-all cursor-pointer ease-in hover:translate-x-[0.1rem] ${!open ? "justify-center" : ""} ${pathname.startsWith("/categorias") ? "bg-[#F1592A]/10 text-[#F1592A] font-semibold" : ""}`}
+            className={`flex items-center gap-3 py-2 px-3 rounded-lg text-[#666] hover:bg-[#F1592A]/10 hover:text-[#F1592A] transition-all cursor-pointer ease-in hover:translate-x-[0.1rem] ${!open ? "justify-center" : ""} ${pathname.startsWith("/fornecedores") ? "bg-[#F1592A]/10 text-[#F1592A] font-semibold" : ""}`}
           >
             <TruckElectric className="w-5 h-5" />
             {open && <span>Fornecedores</span>}

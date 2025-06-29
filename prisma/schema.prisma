@@ -8,18 +8,18 @@ datasource db {
 }
 
 model Product {
-  id            Int             @id @default(autoincrement())
-  name          String
-  description   String?
-  price         Float
-  sellingPrice  Float
-  sku           String          @unique
-  barcode       String?         @unique
-  quantity      Int
-  supplierId    Int?
-  categoryId    Int?
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  id           Int      @id @default(autoincrement())
+  name         String
+  description  String?
+  price        Float
+  sellingPrice Float
+  sku          String   @unique
+  barcode      String?  @unique
+  quantity     Int
+  supplierId   Int?
+  categoryId   Int?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   Category      Category?       @relation(fields: [categoryId], references: [id])
   Supplier      Supplier?       @relation(fields: [supplierId], references: [id])
@@ -28,62 +28,62 @@ model Product {
 }
 
 model ProductDetail {
-  id          Int      @id @default(autoincrement())
-  productId   Int      @unique
-  brand       String?
-  model       String?
-  dimensions  String?
-  weight      Float?
-  color       String?
-  material    String?
+  id             Int     @id @default(autoincrement())
+  productId      Int     @unique
+  brand          String?
+  model          String?
+  dimensions     String?
+  weight         Float?
+  color          String?
+  material       String?
   additionalInfo String?
 
-  Product     Product  @relation(fields: [productId], references: [id])
+  Product Product @relation(fields: [productId], references: [id])
 }
 
 model Supplier {
-  id                Int       @id @default(autoincrement())
-  name              String
-  corporateName     String?
-  cpfCnpj           String    @unique
-  street            String?
-  number            String?
-  neighborhood      String?
-  city              String?
-  state             String?
-  zipCode           String?
-  mainContactName   String?
-  mainContactPhone  String?
-  mainContactEmail  String?
-  secondaryPhone    String?
-  secondaryEmail    String?
-  website           String?
-  products          Product[]
-  supplierInfo      SupplierInfo?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  id               Int           @id @default(autoincrement())
+  name             String
+  corporateName    String?
+  cpfCnpj          String        @unique
+  street           String?
+  number           String?
+  neighborhood     String?
+  city             String?
+  state            String?
+  zipCode          String?
+  mainContactName  String?
+  mainContactPhone String?
+  mainContactEmail String?
+  secondaryPhone   String?
+  secondaryEmail   String?
+  website          String?
+  products         Product[]
+  supplierInfo     SupplierInfo?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
 }
 
 model SupplierInfo {
-  id              Int      @id @default(autoincrement())
-  supplierId      Int      @unique
-  paymentTerms    String?
-  paymentMethods  String?
-  freightTerms    String?
+  id             Int     @id @default(autoincrement())
+  supplierId     Int     @unique
+  paymentTerms   String?
+  paymentMethods String?
+  freightTerms   String?
 
-  Supplier        Supplier @relation(fields: [supplierId], references: [id])
+  Supplier Supplier @relation(fields: [supplierId], references: [id])
 }
 
 model StockMovement {
-  id          Int       @id @default(autoincrement())
-  productId   Int
-  type        String     // "in" para entrada, "out" para saída
-  quantity    Int
-  date        DateTime   @default(now())
-  userId      Int
-  
-  User        User       @relation(fields: [userId], references: [id])
-  Product     Product    @relation(fields: [productId], references: [id])
+  id        Int      @id @default(autoincrement())
+  productId Int
+  type      String // "in" para entrada, "out" para saída
+  quantity  Int
+  date      DateTime @default(now())
+  userId    Int
+
+  User    User    @relation(fields: [userId], references: [id])
+  Product Product @relation(fields: [productId], references: [id])
 }
 
 model User {
@@ -95,11 +95,19 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  Role          Role            @relation(fields: [role], references: [id])
   StockMovement StockMovement[]
 }
 
 model Category {
-  id        Int     @id @default(autoincrement())
-  title     String
-  products  Product[]
+  id       Int       @id @default(autoincrement())
+  title    String
+  products Product[]
+}
+
+model Role {
+  id    Int    @id @default(autoincrement())
+  title String
+
+  User User[]
 }

@@ -10,6 +10,7 @@ import {
   LogOut,
   Boxes,
   TruckElectric,
+  ShieldCheck,
 } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
@@ -78,6 +79,15 @@ export default function SideBar({ open, onClose }: SideBarProps) {
             <TruckElectric className="w-5 h-5" />
             {open && <span>Fornecedores</span>}
           </Link>
+          {user?.role === 1 && (
+            <Link
+              href="/permissoes"
+              className={`flex items-center gap-3 py-2 px-3 rounded-lg text-[#666] hover:bg-[#F1592A]/10 hover:text-[#F1592A] transition-all cursor-pointer ease-in hover:translate-x-[0.1rem] ${!open ? "justify-center" : ""} ${pathname.startsWith("/permissoes") ? "bg-[#F1592A]/10 text-[#F1592A] font-semibold" : ""}`}
+            >
+              <ShieldCheck className="w-5 h-5" />
+              {open && <span>Permissões</span>}
+            </Link>
+          )}
         </nav>
       </div>
 

@@ -33,6 +33,7 @@ export const authOptions: AuthOptions = {
           id: user.id.toString(),
           name: user.name,
           email: user.email,
+          image: user.image ?? null,
           role: Number(user.role),
         };
       },
@@ -43,11 +44,15 @@ export const authOptions: AuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      if (user) token.role = user.role;
+      if (user) {
+        token.role = user.role;
+        token.image = user.image ?? null;
+      }
       return token;
     },
     async session({ session, token }) {
       if (token?.role !== undefined) session.user.role = token.role as number;
+      if (token?.image !== undefined) session.user.image = token.image as string | null;
       return session;
     },
   },

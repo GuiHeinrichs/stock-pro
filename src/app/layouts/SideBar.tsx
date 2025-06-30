@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import ProfileModal, { Profile } from "../components/ProfileModal";
 
 type SideBarProps = {
   open: boolean;
@@ -21,9 +22,39 @@ type SideBarProps = {
 };
 
 export default function SideBar({ open, onClose }: SideBarProps) {
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const user = session?.user;
   const pathname = usePathname();
+
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [profile, setProfile] = useState<Profile>({
+    name: user?.name || "",
+    email: user?.email || "",
+    role: user?.role || 0,
+    image: user?.image || null,
+  });
+  const [loading, setLoading] = useState(false);
+
+  const handleProfileChange = (field: string, value: any) => {
+    setProfile((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSaveProfile = async () => {
+    setLoading(true);
+    try {
+      await fetch("/perfil/api/update", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: profile.name, image: profile.image }),
+      });
+      await update({ name: profile.name, image: profile.image });
+      setIsProfileOpen(false);
+    } catch (error) {
+      console.error("Erro ao atualizar perfil:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <aside
@@ -96,16 +127,20 @@ export default function SideBar({ open, onClose }: SideBarProps) {
         className={`border-t border-border dark:border-border-dark pt-5 mt-10 flex items-center gap-3 transition-all duration-300 ${!open ? "justify-center" : ""}`}
       >
         <Image
-          src={user?.image || "/profile-default.png"}
+          src={profile.image || "/profile-default.png"}
           width={36}
           height={36}
           alt="Avatar"
-          className="rounded-full border border-border dark:border-border-dark"
+          className="rounded-full border border-border dark:border-border-dark cursor-pointer"
+          onClick={() => setIsProfileOpen(true)}
         />
         {open && (
           <div className="flex flex-col">
-            <span className="text-sm font-medium text-foreground dark:text-foreground-dark">
-              {user?.name || "Admin"}
+            <span
+              className="text-sm font-medium text-foreground dark:text-foreground-dark cursor-pointer"
+              onClick={() => setIsProfileOpen(true)}
+            >
+              {profile.name || "Admin"}
             </span>
             <button
               className="cursor-pointer flex items-center gap-1 text-xs text-danger hover:underline"
@@ -117,6 +152,14 @@ export default function SideBar({ open, onClose }: SideBarProps) {
           </div>
         )}
       </div>
+      <ProfileModal
+        isModalOpen={isProfileOpen}
+        isModalLoading={loading}
+        profile={profile}
+        onChange={handleProfileChange}
+        onOk={handleSaveProfile}
+        onCancel={() => setIsProfileOpen(false)}
+      />
     </aside>
   );
 }

@@ -165,9 +165,9 @@ export default function Suppliers() {
   ];
 
   return (
-    <div className="px-4 py-4 md:px-10 xl:px-20 space-y-8 bg-[#f9f9f9] min-h-screen">
+    <div className="px-4 py-4 md:px-10 xl:px-20 space-y-8 bg-background dark:bg-background-dark min-h-screen">
       {contextHolder}
-      <div className="bg-white rounded-lg p-4 shadow-sm">
+      <div className="bg-card dark:bg-card-dark rounded-lg p-4 shadow-sm border border-border dark:border-border-dark">
         <Form layout="inline" className="flex flex-wrap">
           <Form.Item label="Nome/Razão Social">
             <Search
@@ -204,7 +204,7 @@ export default function Suppliers() {
           </Form.Item>
         </Form>
       </div>
-      <div className="bg-white p-4 rounded-lg shadow">
+      <div className="bg-card dark:bg-card-dark p-4 rounded-lg shadow border border-border dark:border-border-dark">
         <Table
           columns={columns}
           bordered

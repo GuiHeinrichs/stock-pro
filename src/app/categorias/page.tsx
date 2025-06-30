@@ -98,7 +98,7 @@ const Categories = () => {
   return (
     <>
       {contextHolder}
-      <div className="px-4 py-4 md:px-10 xl:px-20 space-y-2 bg-[#f9f9f9] min-h-screen">
+      <div className="px-4 py-4 md:px-10 xl:px-20 space-y-2 bg-background dark:bg-background-dark min-h-screen">
         <div className="flex justify-end items-center">
           <Button
             type="primary"

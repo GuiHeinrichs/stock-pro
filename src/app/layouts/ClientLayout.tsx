@@ -18,7 +18,7 @@ export default function ClientLayout({
   useEffect(() => {}, []);
 
   return (
-    <div className="flex min-h-screen bg-[#f9f9f9]">
+    <div className="flex min-h-screen bg-background dark:bg-background-dark">
       <SessionProvider>
         {!isLoginPage && (
           <SideBar

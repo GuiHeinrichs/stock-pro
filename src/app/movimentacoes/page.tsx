@@ -122,7 +122,7 @@ export default function Movements() {
   ];
 
   return (
-    <div className="px-4 py-4 md:px-10 xl:px-20 space-y-8 bg-[#f9f9f9] min-h-screen">
+    <div className="px-4 py-4 md:px-10 xl:px-20 space-y-8 bg-background dark:bg-background-dark min-h-screen">
       {contextHolder}
       <Table
         columns={columns}

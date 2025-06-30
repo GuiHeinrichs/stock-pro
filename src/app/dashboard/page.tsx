@@ -33,7 +33,6 @@ export default function Dashboard() {
   const recentMovements = data?.recentMovements ?? [];
   const weeklyData = data?.weeklyData ?? [];
 
-
   const estoqueHistorico = data?.estoqueHistorico ?? [];
   const categoriasEstoque = data?.categoriasEstoque ?? [];
   const evolucaoMovimentacoes = data?.evolucaoMovimentacoes ?? [];
@@ -48,7 +47,7 @@ export default function Dashboard() {
   const COLORS = ["#F1592A", "#2196F3", "#FFC107"];
 
   return (
-    <main className="py-4 px-4 md:px-10 xl:px-20 space-y-8 bg-[#f9f9f9] min-h-screen">
+    <main className="py-4 px-4 md:px-10 xl:px-20 space-y-8 bg-[#f9f9f9] dark:bg-[#18181b] min-h-screen">
       {/* KPIs Bento */}
       <section>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-8">

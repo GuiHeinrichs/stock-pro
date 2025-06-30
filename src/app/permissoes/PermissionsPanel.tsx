@@ -54,7 +54,7 @@ export default function PermissionsPanel() {
   ];
 
   return (
-      <div className="p-6 bg-white border border-[#E0E0E0] rounded-2xl shadow-md">
+      <div className="p-6 bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-2xl shadow-md">
         {contextHolder}
         <h2 className="text-lg font-bold mb-4">Permissão de usuários</h2>
         <Table

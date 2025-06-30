@@ -14,9 +14,9 @@ const DashboardCard = ({
   resize: boolean;
 }) => {
   return (
-    <div className="bg-white rounded-2xl p-5 flex items-center justify-between shadow-md">
+    <div className="bg-card dark:bg-card-dark rounded-2xl p-5 flex items-center justify-between shadow-md">
       <div>
-        <p className="text-[#999999] text-xs">{title}</p>
+        <p className="text-muted dark:text-muted-dark text-xs">{title}</p>
         <p
           className={`${resize ? "text-lg" : "text-3xl"} font-bold`}
           style={{ color }}

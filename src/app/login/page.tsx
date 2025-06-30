@@ -35,13 +35,13 @@ export default function Login() {
     <main className="flex items-center justify-center h-screen">
       <Toaster richColors position="top-right" />
       <div className="grid grid-cols-5 w-full h-screen">
-        <div className="col-span-3 bg-[#FFFFFF] flex items-center justify-center p-8">
-          <p className="text-[#1F1F1F] text-2xl">Video Placeholder</p>
+        <div className="col-span-3 bg-card dark:bg-card-dark flex items-center justify-center p-8 border-r border-border dark:border-border-dark">
+          <p className="text-foreground dark:text-foreground-dark text-2xl">Video Placeholder</p>
         </div>
-        <div className="col-span-2 bg-[#FFFFFF] relative flex flex-col items-center justify-center px-8 gap-y-4 border-l border-[#E0E0E0]">
+        <div className="col-span-2 bg-card dark:bg-card-dark relative flex flex-col items-center justify-center px-8 gap-y-4 border-l border-border dark:border-border-dark">
           <div className="flex flex-col items-start max-w-sm w-full text-3xl font-normal z-0 gap-y-1">
-            <span className="text-[#666666]">A evolução da gestão</span>
-            <span className="text-[#666666]">começa com</span>
+            <span className="text-foregroundSec dark:text-foregroundSec-dark">A evolução da gestão</span>
+            <span className="text-foregroundSec dark:text-foregroundSec-dark">começa com</span>
             <div className="flex items-center">
               <span className="text-[#F1592A] font-semibold animate-slide-in-item">
                 StockPro{" "}
@@ -51,12 +51,12 @@ export default function Login() {
               </span>
             </div>
           </div>
-          <div className="w-full max-w-sm bg-card p-6 rounded-md shadow-sm border border-[#E0E0E0] z-50">
+          <div className="w-full max-w-sm bg-card dark:bg-card-dark p-6 rounded-md shadow-sm border border-border dark:border-border-dark z-50">
             <form className="space-y-4" onSubmit={handleSubmit}>
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-[#666666] mb-1"
+                  className="block text-sm font-medium text-foregroundSec dark:text-foregroundSec-dark mb-1"
                 >
                   E-mail
                 </label>
@@ -64,7 +64,7 @@ export default function Login() {
                   id="email"
                   type="email"
                   placeholder="seu@email.com"
-                  className="w-full px-4 py-2 border border-[#E0E0E0] rounded focus:outline-none focus:ring-2 focus:ring-primary text-[#1F1F1F]"
+                  className="w-full px-4 py-2 border border-border dark:border-border-dark rounded focus:outline-none focus:ring-2 focus:ring-primary text-foreground dark:text-foreground-dark bg-background dark:bg-background-dark"
                   onChange={(e) => setEmail(e.target.value)}
                   value={email}
                 />
@@ -72,7 +72,7 @@ export default function Login() {
               <div>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium text-[#666666] mb-1"
+                  className="block text-sm font-medium text-foregroundSec dark:text-foregroundSec-dark mb-1"
                 >
                   Senha
                 </label>
@@ -81,7 +81,7 @@ export default function Login() {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
-                    className="w-full px-4 py-2 border border-[#E0E0E0] rounded focus:outline-none focus:ring-2 focus:ring-primary text-[#1F1F1F]"
+                    className="w-full px-4 py-2 border border-border dark:border-border-dark rounded focus:outline-none focus:ring-2 focus:ring-primary text-foreground dark:text-foreground-dark bg-background dark:bg-background-dark"
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
                   />

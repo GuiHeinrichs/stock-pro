@@ -206,13 +206,13 @@ const Products = () => {
   ];
 
   return (
-    <div className="px-4 py-4 md:px-10 xl:px-20 space-y-8 bg-[#f9f9f9] min-h-screen">
+    <div className="px-4 py-4 md:px-10 xl:px-20 space-y-8 bg-background dark:bg-background-dark min-h-screen">
       {contextHolder} {/* Toast */}
       {/* KPIs */}
       <div className="mb-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="rounded-lg border bg-white p-4 shadow-sm">
-          <p className="text-sm text-[#666]">Itens no estoque</p>
-          <p className="text-lg font-semibold text-[#1F1F1F]">{totalStock}</p>
+        <div className="rounded-lg border border-border dark:border-border-dark bg-card dark:bg-card-dark p-4 shadow-sm">
+          <p className="text-sm text-foregroundSec dark:text-foregroundSec-dark">Itens no estoque</p>
+          <p className="text-lg font-semibold text-foreground dark:text-foreground-dark">{totalStock}</p>
         </div>
         <div className="rounded-lg border border-yellow-400 bg-yellow-50 p-4 shadow-sm">
           <p className="text-sm text-yellow-700">Produtos em estoque crítico</p>
@@ -230,7 +230,7 @@ const Products = () => {
         </div>
       </div>
       {/* Filtros em linha com labels acima dos inputs */}
-      <div className="rounded-lg border bg-white p-4 shadow-sm mb-4 flex justify-center items-center">
+      <div className="rounded-lg border border-border dark:border-border-dark bg-card dark:bg-card-dark p-4 shadow-sm mb-4 flex justify-center items-center">
         <Form layout="vertical" className="gap-y-2 flex flex-wrap gap-x-8">
           <Form.Item label="Produto">
             <Search

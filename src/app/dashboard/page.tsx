@@ -47,7 +47,7 @@ export default function Dashboard() {
   const COLORS = ["#F1592A", "#2196F3", "#FFC107"];
 
   return (
-    <main className="py-4 px-4 md:px-10 xl:px-20 space-y-8 bg-[#f9f9f9] dark:bg-[#18181b] min-h-screen">
+    <main className="py-4 px-4 md:px-10 xl:px-20 space-y-8 bg-background dark:bg-background-dark min-h-screen">
       {/* KPIs Bento */}
       <section>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-8">
@@ -95,8 +95,8 @@ export default function Dashboard() {
       {/* Bento Grid: Gráficos */}
       <section className="grid grid-cols-1 xl:grid-cols-4 gap-8">
         {/* Evolução do Estoque (Area Chart) */}
-        <div className="bg-white border border-[#E0E0E0] rounded-2xl p-6 shadow-md col-span-2">
-          <h2 className="text-lg font-bold text-[#1F1F1F] mb-4">
+        <div className="bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-2xl p-6 shadow-md col-span-2">
+          <h2 className="text-lg font-bold text-foreground dark:text-foreground-dark mb-4">
             Evolução do Estoque na Semana
           </h2>
           <ResponsiveContainer width="100%" height={250}>
@@ -123,23 +123,23 @@ export default function Dashboard() {
         </div>
 
         {/* Card Produto em Destaque */}
-        <div className="bg-white border border-[#E0E0E0] rounded-2xl p-6 shadow-md flex flex-col justify-between col-span-1">
-          <h2 className="text-lg font-bold text-[#1F1F1F] mb-2">
+        <div className="bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-2xl p-6 shadow-md flex flex-col justify-between col-span-1">
+          <h2 className="text-lg font-bold text-foreground dark:text-foreground-dark mb-2">
             Produto em Destaque
           </h2>
-          <p className="text-2xl font-bold text-[#F1592A] mb-1">
+          <p className="text-2xl font-bold text-primary mb-1">
             {topProducts[0]?.name ?? "-"}
           </p>
           {topProducts[0] && (
-            <span className="text-[#666666]">
+            <span className="text-foregroundSec dark:text-foregroundSec-dark">
               Movimentado {topProducts[0].movimentado}x na semana
             </span>
           )}
         </div>
 
         {/* Pie Chart: Distribuição por Categoria */}
-        <div className="bg-white border border-[#E0E0E0] rounded-2xl p-6 shadow-md flex flex-col items-center justify-center col-span-1">
-          <h2 className="text-lg font-bold text-[#1F1F1F] mb-4 text-center">
+        <div className="bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-2xl p-6 shadow-md flex flex-col items-center justify-center col-span-1">
+          <h2 className="text-lg font-bold text-foreground dark:text-foreground-dark mb-4 text-center">
             Distribuição por Categoria
           </h2>
           <ResponsiveContainer width="100%" height={250}>
@@ -166,8 +166,8 @@ export default function Dashboard() {
         </div>
 
         {/* Line Chart Evolução Entradas/Saídas */}
-        <div className="bg-white border border-[#E0E0E0] rounded-2xl p-6 shadow-md flex flex-col items-center justify-center col-span-2">
-          <h2 className="text-lg font-bold text-[#1F1F1F] mb-4 text-center">
+        <div className="bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-2xl p-6 shadow-md flex flex-col items-center justify-center col-span-2">
+          <h2 className="text-lg font-bold text-foreground dark:text-foreground-dark mb-4 text-center">
             Evolução de Entradas e Saídas
           </h2>
           <ResponsiveContainer width="100%" height={250}>
@@ -194,8 +194,8 @@ export default function Dashboard() {
         </div>
 
         {/* Top Produtos Movimentados (Bar Chart vertical) */}
-        <div className="bg-white border border-[#E0E0E0] rounded-2xl p-6 shadow-md col-span-2">
-          <h2 className="text-lg font-bold text-[#1F1F1F] mb-4">
+        <div className="bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-2xl p-6 shadow-md col-span-2">
+          <h2 className="text-lg font-bold text-foreground dark:text-foreground-dark mb-4">
             Top Produtos Movimentados
           </h2>
           <ResponsiveContainer width="100%" height={250}>
@@ -216,13 +216,13 @@ export default function Dashboard() {
 
       {/* Últimas movimentações */}
       <section>
-        <div className="bg-white border border-[#E0E0E0] rounded-2xl p-6 shadow-md">
-          <h2 className="text-lg font-bold mb-4 text-[#1F1F1F]">
+        <div className="bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-2xl p-6 shadow-md">
+          <h2 className="text-lg font-bold mb-4 text-foreground dark:text-foreground-dark">
             Últimas Movimentações
           </h2>
           <table className="w-full text-sm text-left">
             <thead>
-              <tr className="text-[#666666] border-b">
+              <tr className="text-foregroundSec dark:text-foregroundSec-dark border-b border-border dark:border-border-dark">
                 <th className="py-2">Produto</th>
                 <th className="py-2">Tipo</th>
                 <th className="py-2">Quantidade</th>
@@ -232,14 +232,14 @@ export default function Dashboard() {
             <tbody>
               {recentMovements.map((mov, i) => (
                 <tr key={i} className="border-b last:border-none">
-                  <td className="py-2 text-[#1F1F1F]">{mov.product}</td>
+                  <td className="py-2 text-foreground dark:text-foreground-dark">{mov.product}</td>
                   <td
-                    className={`py-2 ${mov.type === "Entrada" ? "text-[#4CAF50]" : "text-[#F44336]"}`}
+                    className={`py-2 ${mov.type === "Entrada" ? "text-success" : "text-danger"}`}
                   >
                     {mov.type}
                   </td>
                   <td className="py-2">{mov.quantity}</td>
-                  <td className="py-2 text-[#666666]">{mov.date}</td>
+                  <td className="py-2 text-foregroundSec dark:text-foregroundSec-dark">{mov.date}</td>
                 </tr>
               ))}
             </tbody>

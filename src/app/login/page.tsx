@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Input } from "antd";
 import { signIn } from "next-auth/react";
 import { Toaster, toast } from "sonner";
+import Image from "next/image";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,12 +37,18 @@ export default function Login() {
       <Toaster richColors position="top-right" />
       <div className="grid grid-cols-5 w-full h-screen">
         <div className="col-span-3 bg-card dark:bg-card-dark flex items-center justify-center p-8 border-r border-border dark:border-border-dark">
-          <p className="text-foreground dark:text-foreground-dark text-2xl">Video Placeholder</p>
+          <p className="text-foreground dark:text-foreground-dark text-2xl">
+            Video Placeholder
+          </p>
         </div>
         <div className="col-span-2 bg-card dark:bg-card-dark relative flex flex-col items-center justify-center px-8 gap-y-4 border-l border-border dark:border-border-dark">
           <div className="flex flex-col items-start max-w-sm w-full text-3xl font-normal z-0 gap-y-1">
-            <span className="text-foregroundSec dark:text-foregroundSec-dark">A evolução da gestão</span>
-            <span className="text-foregroundSec dark:text-foregroundSec-dark">começa com</span>
+            <span className="text-foregroundSec dark:text-foregroundSec-dark">
+              A evolução da gestão
+            </span>
+            <span className="text-foregroundSec dark:text-foregroundSec-dark">
+              começa com
+            </span>
             <div className="flex items-center">
               <span className="text-[#F1592A] font-semibold animate-slide-in-item">
                 StockPro{" "}
@@ -90,11 +97,7 @@ export default function Login() {
                     onClick={() => setShowPassword((v) => !v)}
                     className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
                   >
-                    {showPassword ? (
-                      <EyeOff size={18} />
-                    ) : (
-                      <Eye size={18} />
-                    )}
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
               </div>

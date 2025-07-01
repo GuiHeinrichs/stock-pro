@@ -30,8 +30,4 @@ export default function ThemeToggle() {
       setIsDark(true);
     }
   };
-
-  return (
-    <button onClick={toggleTheme}>{isDark ? "🌙 Dark" : "☀️ Light"}</button>
-  );
 }

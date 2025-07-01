@@ -33,6 +33,16 @@ export default function ProfileModal({
   onOk,
   onCancel,
 }: Props) {
+  const handleProfileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      onChange("image", reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+  console.log("ProfileModal", profile);
   return (
     <Modal
       open={isModalOpen}
@@ -45,30 +55,24 @@ export default function ProfileModal({
       width={500}
     >
       <Form layout="vertical">
-        <Form.Item label="Foto">
-          <div className="flex items-center gap-4">
-            <Image
-              src={profile.image || "/profile-default.png"}
-              width={64}
-              height={64}
-              alt="Avatar"
-              className="rounded-full border border-border dark:border-border-dark"
-            />
+        <div className="flex flex-col items-center justify-center gap-4">
+          <Image
+            src={profile.image || "/profile-default.png"}
+            width={64}
+            height={64}
+            alt="Avatar"
+            className="rounded-full border border-border dark:border-border-dark"
+          />
+          <label className="cursor-pointer text-sm text-muted dark:text-muted-dark hover:underline mb-6">
+            Alterar foto
             <input
               type="file"
               accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                  onChange("image", reader.result);
-                };
-                reader.readAsDataURL(file);
-              }}
+              onChange={handleProfileImageChange}
+              style={{ display: "none" }}
             />
-          </div>
-        </Form.Item>
+          </label>
+        </div>
         <Form.Item label="Nome" required>
           <Input
             value={profile.name}
@@ -79,7 +83,10 @@ export default function ProfileModal({
           <Input value={profile.email} disabled />
         </Form.Item>
         <Form.Item label="Papel">
-          <Input value={roleLabels[profile.role]} disabled />
+          <Input
+            value={roleLabels[profile.role as keyof typeof roleLabels]}
+            disabled
+          />
         </Form.Item>
       </Form>
     </Modal>

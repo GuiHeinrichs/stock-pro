@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -25,6 +25,15 @@ export default function SideBar({ open, onClose }: SideBarProps) {
   const { data: session, update } = useSession();
   const user = session?.user;
   const pathname = usePathname();
+
+  useEffect(() => {
+    setProfile({
+      name: user?.name || "",
+      email: user?.email || "",
+      role: user?.role || 0,
+      image: user?.image || null,
+    });
+  }, [user]);
 
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [profile, setProfile] = useState<Profile>({
@@ -131,7 +140,7 @@ export default function SideBar({ open, onClose }: SideBarProps) {
           width={36}
           height={36}
           alt="Avatar"
-          className="rounded-full border border-border dark:border-border-dark cursor-pointer"
+          className="rounded-full border border-border dark:border-border-dark cursor-pointer ml-4"
           onClick={() => setIsProfileOpen(true)}
         />
         {open && (
@@ -140,14 +149,14 @@ export default function SideBar({ open, onClose }: SideBarProps) {
               className="text-sm font-medium text-foreground dark:text-foreground-dark cursor-pointer"
               onClick={() => setIsProfileOpen(true)}
             >
-              {profile.name || "Admin"}
+              {user?.name || profile.name}
             </span>
             <button
-              className="cursor-pointer flex items-center gap-1 text-xs text-danger hover:underline"
-              onClick={() => signOut()}
+              className="cursor-pointer flex items-center gap-1 text-xs dark:text-white text-danger hover:underline"
+              onClick={() => signOut({ callbackUrl: "/login" })}
             >
               <LogOut className="w-4 h-4" />
-              Sair
+              <span className="hover:text-orange-500">Sair</span>
             </button>
           </div>
         )}

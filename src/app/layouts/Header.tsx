@@ -26,7 +26,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
         </span>
       </div>
       <div className="flex items-center gap-8 w-85">
-        <div className="flex items-center bg-muted/20 dark:bg-muted-dark/20 px-3 py-1.5 rounded-full w-full text-muted dark:text-muted-dark hover:bg-muted/30 dark:hover:bg-muted-dark/30 cursor-pointer">
+        <div className="flex items-center bg-muted/20 dark:bg-muted/40 px-3 py-1.5 rounded-full w-full text-muted dark:text-muted-dark hover:bg-muted/30 dark:hover:bg-muted-dark/30 cursor-pointer">
           <Search className="w-4 h-4 mr-2 transition-transform ease-in hover:-translate-y-[0.1rem]" />
           <input
             type="text"

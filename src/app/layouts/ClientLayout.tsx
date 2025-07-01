@@ -34,7 +34,6 @@ export default function ClientLayout({
           {!isLoginPage && (
             <Header onMenuClick={() => setIsSidebarOpen((v) => !v)} />
           )}
-          <ThemeToggle />
           <main>{children}</main>
         </div>
       </SessionProvider>

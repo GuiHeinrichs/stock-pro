@@ -13,7 +13,8 @@ export default function Movements() {
   const [messageApi, contextHolder] = message.useMessage();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<ModalMode>(ModalMode.CREATE);
-  const [selectedMovement, setSelectedMovement] = useState<StockMovement | null>(null);
+  const [selectedMovement, setSelectedMovement] =
+    useState<StockMovement | null>(null);
   const [refetchTrigger, setRefetchTrigger] = useState(false);
 
   useEffect(() => {
@@ -36,11 +37,15 @@ export default function Movements() {
       okText: "Excluir",
       cancelText: "Cancelar",
       okButtonProps: { danger: true },
+      //TODO: usar no lugar do fetch, usar service ou metodo, para nao deixar exposto
       onOk: async () => {
         try {
-          const response = await fetch(`/estoque/api/delete?id=${movement.id}`, {
-            method: "DELETE",
-          });
+          const response = await fetch(
+            `/estoque/api/delete?id=${movement.id}`,
+            {
+              method: "DELETE",
+            }
+          );
           if (response.ok) {
             const successData: ValidityMessage = {
               type: "success",

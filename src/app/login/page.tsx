@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Input } from "antd";
 import { signIn } from "next-auth/react";
 import { Toaster, toast } from "sonner";
-import Image from "next/image";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -16,7 +15,7 @@ export default function Login() {
     try {
       const result = await signIn("credentials", {
         redirect: false,
-        callbackUrl: "/",
+        callbackUrl: "/dashboard",
         email,
         password,
       });
@@ -24,17 +23,18 @@ export default function Login() {
       if (result?.error) {
         toast.error("Usuário ou senha incorretos.");
       } else {
-        window.location.href = result?.url || "/";
+        window.location.href = result?.url || "/dashboard";
         toast.success("Login realizado com sucesso!");
       }
     } catch (error) {
-      toast.error("Erro ao fazer login: " + error);
+      toast.error("Erro ao fazer login. Por favor, tente novamente.");
+      console.error("Login error:", error);
     }
   };
 
   return (
     <main className="flex items-center justify-center h-screen">
-      <Toaster richColors position="top-right" />
+      <Toaster richColors position="top-right" offset={{ right: "6rem" }} />
       <div className="grid grid-cols-5 w-full h-screen">
         <div className="col-span-3 bg-card dark:bg-card-dark flex items-center justify-center p-8 border-r border-border dark:border-border-dark">
           <p className="text-foreground dark:text-foreground-dark text-2xl">

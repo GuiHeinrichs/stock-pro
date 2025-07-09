@@ -1,29 +1,28 @@
-'use client'
-import { useState, useEffect } from 'react'
+"use client";
+import { useState, useEffect } from "react";
 
 export const useDarkMode = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem('theme')
-    console.log(stored)
-    if (stored === 'dark') {
-      setIsDarkMode(true)
-      document.documentElement.classList.add('dark')
+    const stored = localStorage.getItem("theme");
+    if (stored === "dark") {
+      setIsDarkMode(true);
+      document.documentElement.classList.add("dark");
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (isDarkMode) {
-      document.documentElement.classList.add('dark')
-      localStorage.setItem('theme', 'dark')
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
     } else {
-      document.documentElement.classList.remove('dark')
-      localStorage.setItem('theme', 'light')
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
     }
-  }, [isDarkMode])
+  }, [isDarkMode]);
 
-  const toggleDarkMode = () => setIsDarkMode((v) => !v)
+  const toggleDarkMode = () => setIsDarkMode((v) => !v);
 
-  return { isDarkMode, toggleDarkMode }
-}
+  return { isDarkMode, toggleDarkMode };
+};

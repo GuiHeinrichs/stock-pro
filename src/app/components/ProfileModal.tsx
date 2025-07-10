@@ -42,7 +42,7 @@ export default function ProfileModal({
     };
     reader.readAsDataURL(file);
   };
-  console.log("ProfileModal", profile);
+
   return (
     <Modal
       open={isModalOpen}

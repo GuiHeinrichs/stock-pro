@@ -5,7 +5,6 @@ import Header from "./Header";
 import SideBar from "./SideBar";
 import { SessionProvider } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import ThemeToggle from "../components/ThemeToggle";
 
 export default function ClientLayout({
   children,

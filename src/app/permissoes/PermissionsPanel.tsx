@@ -2,7 +2,7 @@
 import { Table, Select, message } from "antd";
 import { useUsers } from "@/app/hooks/users/userUsers";
 import { UserRole } from "@/types/UserRole";
-import {User} from "@/types/User";
+import { User } from "@/types/User";
 
 const { Option } = Select;
 
@@ -39,29 +39,29 @@ export default function PermissionsPanel() {
       title: "Papel",
       key: "role",
       render: (_: User, record: User) => (
-          <Select
-              value={record.role}
-              onChange={(value) => handleChangeRole(record.id, value)}
-          >
-            {roles.map((role) => (
-                <Option key={role.id} value={role.id}>
-                  {role.name}
-                </Option>
-            ))}
-          </Select>
+        <Select
+          value={record.role}
+          onChange={(value) => handleChangeRole(record.id, value)}
+        >
+          {roles.map((role) => (
+            <Option key={role.id} value={role.id}>
+              {role.name}
+            </Option>
+          ))}
+        </Select>
       ),
     },
   ];
 
   return (
-      <div className="p-6 bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-2xl shadow-md">
-        {contextHolder}
-        <h2 className="text-lg font-bold mb-4">Permissão de usuários</h2>
-        <Table
-            dataSource={users.map((u: User) => ({ ...u, key: u.id }))}
-            columns={columns}
-            pagination={false}
-        />
-      </div>
+    <div className="p-6 bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-2xl shadow-md">
+      {contextHolder}
+      <h2 className="text-lg font-bold mb-4">Permissão de usuários</h2>
+      <Table
+        dataSource={users.map((u: User) => ({ ...u, key: u.id }))}
+        columns={columns}
+        pagination={false}
+      />
+    </div>
   );
 }

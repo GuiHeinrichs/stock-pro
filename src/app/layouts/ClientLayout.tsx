@@ -14,12 +14,13 @@ export default function ClientLayout({
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const pathname = usePathname();
   const isLoginPage = pathname === "/login";
+  const isForbiddenPage = pathname === "/403";
   useEffect(() => {}, []);
 
   return (
     <div className="flex min-h-screen bg-background dark:bg-background-dark">
       <SessionProvider>
-        {!isLoginPage && (
+        {!isLoginPage && !isForbiddenPage && (
           <SideBar
             open={isSidebarOpen}
             onClose={() => setIsSidebarOpen(false)}
@@ -27,11 +28,13 @@ export default function ClientLayout({
         )}
         <div
           className={`flex-1 min-w-0 transition-all duration-300 ${
-            !isLoginPage && isSidebarOpen ? "ml-52" : "ml-0"
+            !isLoginPage && !isForbiddenPage && isSidebarOpen ? "ml-52" : "ml-0"
           }`}
         >
           {!isLoginPage && (
-            <Header onMenuClick={() => setIsSidebarOpen((v) => !v)} />
+            <Header
+              onMenuClick={() => setIsSidebarOpen((v) => !v)}
+            />
           )}
           <main>{children}</main>
         </div>

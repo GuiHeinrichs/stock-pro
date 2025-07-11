@@ -16,10 +16,12 @@ export default function Header({ onMenuClick }: HeaderProps) {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   return (
-    <header className="w-full pl-22 h-16 bg-card dark:bg-card-dark border-b border-border dark:border-border-dark flex items-center justify-between px-6 shadow-sm z-10 sticky top-0">
+    <header
+      className={`w-full ${isForbiddenPage ? "" : "pl-22"} h-16 bg-card dark:bg-card-dark border-b border-border dark:border-border-dark flex items-center justify-between px-6 shadow-sm z-10 sticky top-0`}
+    >
       {isForbiddenPage ? (
-        <div className="flex justify-center items-center w-full">
-          <Image src="/logo-stock-pro.png" alt="Logo" width={120} height={40} />
+        <div className="flex justify-center items-center w-full text-2xl font-bold text-primary">
+          StockPro
         </div>
       ) : (
         <>

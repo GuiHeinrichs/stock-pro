@@ -1,7 +1,5 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  matcher: ["/produtos/api/:path*", "/estoque/api/:path*"],
-};
+const nextConfig: NextConfig = {};
 
 export default nextConfig;

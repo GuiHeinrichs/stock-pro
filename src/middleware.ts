@@ -6,7 +6,6 @@ export async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
   const protectedRoutes = ["/produtos/api", "/estoque/api"];
-
   const isProtected = protectedRoutes.some((path) =>
     req.nextUrl.pathname.startsWith(path)
   );
@@ -17,3 +16,7 @@ export async function middleware(req: NextRequest) {
 
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: ["/produtos/api/:path*", "/estoque/api/:path*"]
+};

@@ -8,5 +8,7 @@ export default async function Home() {
   if (!session) {
     redirect("/403");
   }
+
+  redirect("/dashboard");
   return <Dashboard />;
 }

@@ -10,6 +10,13 @@ export const useDarkMode = () => {
       setIsDarkMode(true);
       document.documentElement.classList.add("dark");
     }
+    const syncTheme = (e: StorageEvent) => {
+      if (e.key === "theme") {
+        setIsDarkMode(e.newValue === "dark");
+      }
+    };
+    window.addEventListener("storage", syncTheme);
+    return () => window.removeEventListener("storage", syncTheme);
   }, []);
 
   useEffect(() => {

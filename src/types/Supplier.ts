@@ -21,6 +21,7 @@ export type Supplier = {
   secondaryPhone?: string | null;
   secondaryEmail?: string | null;
   website?: string | null;
+  clientId: number;
   supplierInfo?: SupplierInfo | null;
   products?: import("./Product").Product[];
   createdAt?: string;

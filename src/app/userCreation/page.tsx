@@ -1,7 +1,6 @@
 "use client";
 import { Form, Input, Select, Button, message } from "antd";
 import { useState } from "react";
-import { UserService } from "../services/userService";
 
 const { Option } = Select;
 
@@ -11,11 +10,23 @@ export default function CreateUserPage() {
   const handleFinish = async (values: any) => {
     setLoading(true);
     try {
-      await UserService.create(values);
+      const response = await fetch("/userCreation/api/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Erro ao criar usuário.");
+      }
 
       message.success("Usuário criado com sucesso!");
-    } catch (err) {
-      message.error("Erro ao criar usuário.");
+    } catch (err: any) {
+      message.error(err.message || "Erro ao criar usuário.");
     } finally {
       setLoading(false);
     }

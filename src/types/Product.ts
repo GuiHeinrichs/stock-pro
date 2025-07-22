@@ -9,6 +9,7 @@ export type Product = {
   quantity: number;
   categoryId?: number | null;
   supplierId?: number | null;
+  clientId: number;
   createdAt?: string;
   updatedAt?: string;
   Supplier?: { name: string };

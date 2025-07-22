@@ -7,6 +7,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Client {
+  idClient      Int     @id @default(autoincrement())
+  name          String
+  corporateName String?
+  phone         String?
+  state         String?
+  country       String?
+  city          String?
+  address       String?
+  cpfCnpj       String
+  isActive      Boolean
+
+  Product       Product[]
+  ProductDetail ProductDetail[]
+  Supplier      Supplier[]
+  SupplierInfo  SupplierInfo[]
+  StockMovement StockMovement[]
+  User          User[]
+  Category      Category[]
+  Role          Role[]
+}
+
 model Product {
   id           Int      @id @default(autoincrement())
   name         String
@@ -18,6 +40,7 @@ model Product {
   quantity     Int
   supplierId   Int?
   categoryId   Int?
+  clientId     Int
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -25,11 +48,13 @@ model Product {
   Supplier      Supplier?       @relation(fields: [supplierId], references: [id])
   StockMovement StockMovement[]
   ProductDetail ProductDetail?
+  Client        Client          @relation(fields: [clientId], references: [idClient])
 }
 
 model ProductDetail {
   id             Int     @id @default(autoincrement())
   productId      Int     @unique
+  clientId       Int
   brand          String?
   model          String?
   dimensions     String?
@@ -39,6 +64,7 @@ model ProductDetail {
   additionalInfo String?
 
   Product Product @relation(fields: [productId], references: [id])
+  Client  Client  @relation(fields: [clientId], references: [idClient])
 }
 
 model Supplier {
@@ -58,25 +84,31 @@ model Supplier {
   secondaryPhone   String?
   secondaryEmail   String?
   website          String?
+  clientId         Int
   products         Product[]
   supplierInfo     SupplierInfo?
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
+
+  Client           Client        @relation(fields: [clientId], references: [idClient])
 }
 
 model SupplierInfo {
   id             Int     @id @default(autoincrement())
   supplierId     Int     @unique
+  clientId       Int
   paymentTerms   String?
   paymentMethods String?
   freightTerms   String?
 
   Supplier Supplier @relation(fields: [supplierId], references: [id])
+  Client   Client   @relation(fields: [clientId], references: [idClient])
 }
 
 model StockMovement {
   id        Int      @id @default(autoincrement())
   productId Int
+  clientId  Int
   type      String // "in" para entrada, "out" para saída
   quantity  Int
   date      DateTime @default(now())
@@ -84,6 +116,7 @@ model StockMovement {
 
   User    User    @relation(fields: [userId], references: [id])
   Product Product @relation(fields: [productId], references: [id])
+  Client  Client  @relation(fields: [clientId], references: [idClient])
 }
 
 model User {
@@ -93,22 +126,29 @@ model User {
   password  String
   image     String?
   role      Int      @default(0)
+  clientId  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   Role          Role            @relation(fields: [role], references: [id])
   StockMovement StockMovement[]
+  Client        Client          @relation(fields: [clientId], references: [idClient])
 }
 
 model Category {
   id       Int       @id @default(autoincrement())
   title    String
+  clientId Int
   products Product[]
+
+  Client   Client @relation(fields: [clientId], references: [idClient])
 }
 
 model Role {
   id    Int    @id @default(autoincrement())
   title String
+  clientId Int
 
-  User User[]
+  User   User[]
+  Client Client @relation(fields: [clientId], references: [idClient])
 }

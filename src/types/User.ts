@@ -6,6 +6,7 @@ export type User = {
   name: string;
   email: string;
   password: string;
+  clientId: number;
   image?: string | null;
   role: number;
   createdAt: Date;

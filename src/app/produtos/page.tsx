@@ -211,8 +211,12 @@ const Products = () => {
       {/* KPIs */}
       <div className="mb-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="rounded-lg border border-border dark:border-border-dark bg-card dark:bg-card-dark p-4 shadow-sm">
-          <p className="text-sm text-foregroundSec dark:text-foregroundSec-dark">Itens no estoque</p>
-          <p className="text-lg font-semibold text-foreground dark:text-foreground-dark">{totalStock}</p>
+          <p className="text-sm text-foreground dark:text-foregroundSec-dark">
+            Itens no estoque
+          </p>
+          <p className="text-lg font-semibold text-foreground dark:text-foreground-dark">
+            {totalStock}
+          </p>
         </div>
         <div className="rounded-lg border border-yellow-400 bg-yellow-50 p-4 shadow-sm">
           <p className="text-sm text-yellow-700">Produtos em estoque crítico</p>
@@ -253,11 +257,12 @@ const Products = () => {
               }
               style={{ width: 200 }}
             >
-              {categories.map((cat: Category) => (
-                <Option key={cat.id} value={cat.id}>
-                  {cat.title}
-                </Option>
-              ))}
+              {Array.isArray(categories) &&
+                categories.map((cat: Category) => (
+                  <Option key={cat.id} value={cat.id}>
+                    {cat.title}
+                  </Option>
+                ))}
             </Select>
           </Form.Item>
           <Form.Item label="Preço custo (mín)">
@@ -323,6 +328,7 @@ const Products = () => {
         </Form>
       </div>
       <Table
+        className="text-foreground"
         columns={columns}
         bordered
         pagination={{ position: ["bottomCenter"] }}

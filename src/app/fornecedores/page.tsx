@@ -1,5 +1,14 @@
 "use client";
-import { Table, Button, Tooltip, Input, Form, message, Modal, Badge } from "antd";
+import {
+  Table,
+  Button,
+  Tooltip,
+  Input,
+  Form,
+  message,
+  Modal,
+  Badge,
+} from "antd";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
 import { Supplier } from "@/types/Supplier";
@@ -110,17 +119,11 @@ export default function Suppliers() {
       key: "products",
       render: (_: any, record: Supplier) => (
         <div className="flex flex-wrap gap-1">
-          {record.products && record.products.length > 0 ? (
-            record.products.map((product) => (
-              <Badge
-                key={product.id}
-                color="#F1592A"
-                text={product.name}
-              />
-            ))
-          ) : (
-            "-"
-          )}
+          {record.products && record.products.length > 0
+            ? record.products.map((product) => (
+                <Badge key={product.id} color="#F1592A" text={product.name} />
+              ))
+            : "-"}
         </div>
       ),
     },
@@ -204,7 +207,7 @@ export default function Suppliers() {
           </Form.Item>
         </Form>
       </div>
-      <div className="bg-card dark:bg-card-dark p-4 rounded-lg shadow border border-border dark:border-border-dark">
+      <>
         <Table
           columns={columns}
           bordered
@@ -233,7 +236,7 @@ export default function Suppliers() {
           selectedSupplier={selectedSupplier}
           onUpdateFinish={() => setRefetchTrigger((prev) => !prev)}
         />
-      </div>
+      </>
     </div>
   );
 }

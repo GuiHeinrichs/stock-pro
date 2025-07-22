@@ -61,7 +61,7 @@
 :root {
   --radius: 0.625rem;
   --background: #ffffff;
-  --foreground: #1f1f1f;
+  --foreground: #535458;
   --card: #ffffff;
   --card-foreground: #1f1f1f;
   --popover: #ffffff;
@@ -70,6 +70,7 @@
   --primary-foreground: #ffffff;
   --secondary: #666666;
   --secondary-foreground: #ffffff;
+  --foreground-sec: #f1f1f1;
   --muted: #999999;
   --muted-foreground: #1f1f1f;
   --accent: #666666;
@@ -132,6 +133,6 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background;
   }
 }

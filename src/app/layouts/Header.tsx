@@ -25,11 +25,11 @@ export default function Header({ onMenuClick }: HeaderProps) {
         </div>
       ) : (
         <>
-          <div className="flex justify-start items-center gap-8 text-sm text-foregroundSec dark:text-foregroundSec-dark">
+          <div className="flex justify-start items-center gap-8 text-sm">
             <button onClick={onMenuClick}>
-              <PanelLeft className="w-5 h-5 text-foregroundSec dark:text-foregroundSec-dark hover:text-primary transition-all cursor-pointer ease-in hover:-translate-y-[0.1rem]" />
+              <PanelLeft className="w-5 h-5 text-foreground hover:text-primary transition-all cursor-pointer ease-in hover:-translate-y-[0.1rem]" />
             </button>
-            <span className="text-lg font-semibold text-center text-foregroundSec dark:text-foregroundSec-dark hover:bg-border dark:hover:bg-border-dark px-4 py-2 rounded-2xl transition-all hover:translate-x-0.5 ease-linear">
+            <span className="text-lg font-semibold text-center text-foreground hover:bg-border dark:hover:bg-border-dark px-4 py-2 rounded-2xl transition-all hover:translate-x-0.5 ease-linear">
               {pathname}
             </span>
           </div>
@@ -46,15 +46,15 @@ export default function Header({ onMenuClick }: HeaderProps) {
               </kbd>
             </div>
             <button>
-              <Bell className="w-5 h-5 text-foregroundSec dark:text-foregroundSec-dark hover:text-primary transition-all cursor-pointer ease-in hover:-translate-y-[0.1rem]" />
+              <Bell className="w-5 h-5 text-foreground hover:text-primary transition-all cursor-pointer ease-in hover:-translate-y-[0.1rem]" />
             </button>
-            <button onClick={toggleDarkMode}>
-              {isDarkMode ? (
+            {/* <button onClick={toggleDarkMode}>
+              {true ? (
                 <Sun className="w-5 h-5 text-foregroundSec dark:text-foregroundSec-dark hover:text-primary transition-all cursor-pointer ease-in hover:-translate-y-[0.1rem]" />
               ) : (
                 <Moon className="w-5 h-5 text-foregroundSec dark:text-foregroundSec-dark hover:text-primary transition-all cursor-pointer ease-in hover:-translate-y-[0.1rem]" />
               )}
-            </button>
+            </button> */}
           </div>
         </>
       )}

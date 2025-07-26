@@ -29,12 +29,17 @@ export default function CreateUserPage() {
     setLoading(true);
     console.log("Dados do formulário:", values);
     try {
+      const payload = {
+        ...values,
+        role: Number(values.role),
+        clientId: Number(values.clientId),
+      };
       const response = await fetch("/api/user/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
@@ -43,7 +48,13 @@ export default function CreateUserPage() {
         throw new Error(data.message || "Erro ao criar usuário.");
       }
 
-      toast.success("Usuário criado com sucesso!");
+      if (data.emailSent === false) {
+        toast.warning(
+          "Usuário criado, mas houve falha ao enviar o e-mail de boas-vindas."
+        );
+      } else {
+        toast.success("Usuário criado com sucesso!");
+      }
     } catch (err: any) {
       toast.error(err.message || "Erro ao criar usuário.");
     } finally {

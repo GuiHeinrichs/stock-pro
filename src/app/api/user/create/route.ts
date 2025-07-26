@@ -9,23 +9,44 @@ import crypto from "crypto";
 const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_KEY);
 
 export async function POST(request: Request) {
+  console.log("request", request);
+  console.log("authOptions", authOptions);
+  console.log("Iniciando criação de usuário...");
   const session = await getServerSession(authOptions);
+  console.log("session:", session);
   if (!session || session.user.role !== 1) {
     return NextResponse.json({ message: "Não autorizado" }, { status: 403 });
   }
 
   try {
-    const { name, email, role } = await request.json();
+    const { name, email, role, clientId } = await request.json();
+    console.log(name, email, role, clientId);
+    console.log("Dados recebidos do formulário:", {
+      name,
+      email,
+      role,
+      clientId,
+    });
     if (!name || !email || typeof role !== "number") {
-      return NextResponse.json({ message: "Dados inválidos." }, { status: 400 });
+      return NextResponse.json(
+        { message: "Dados inválidos." },
+        { status: 400 }
+      );
     }
 
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) {
-      return NextResponse.json({ message: "E-mail já cadastrado." }, { status: 400 });
+      return NextResponse.json(
+        { message: "E-mail já cadastrado." },
+        { status: 400 }
+      );
     }
 
-    const tempPassword = crypto.randomBytes(8).toString("base64url").slice(0, 12);
+    console.log("Gerando senha temporária e criptografando...");
+    const tempPassword = crypto
+      .randomBytes(8)
+      .toString("base64url")
+      .slice(0, 12);
     const hashedPassword = await bcrypt.hash(tempPassword, 10);
 
     const user = await prisma.user.create({
@@ -34,10 +55,13 @@ export async function POST(request: Request) {
         email,
         role,
         password: hashedPassword,
+        clientId,
       },
     });
+    console.log("Usuário criado com sucesso no banco:", user);
 
     try {
+      console.log("Enviando e-mail de boas-vindas para:", email);
       await resend.emails.send({
         from: "no-reply@onresend.com",
         to: email,
@@ -51,7 +75,7 @@ export async function POST(request: Request) {
         `,
       });
     } catch (emailError) {
-      console.error(emailError);
+      console.error("Erro ao enviar o e-mail:", emailError);
       return NextResponse.json(
         { message: "Usuário criado, mas não foi possível enviar o e-mail." },
         { status: 500 }
@@ -63,7 +87,7 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (error) {
-    console.error(error);
+    console.error("Erro inesperado durante criação de usuário:", error);
     return NextResponse.json(
       { message: "Erro ao criar usuário." },
       { status: 500 }

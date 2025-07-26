@@ -16,6 +16,7 @@ export async function middleware(req: NextRequest) {
     "/categorias/api",
     "/dashboard/api",
     "/userCreation",
+    "/api/user",
   ];
   const isProtectedApi = protectedApiRoutes.some((path) =>
     pathname.startsWith(path)

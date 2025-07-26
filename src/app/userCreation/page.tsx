@@ -1,16 +1,35 @@
 "use client";
-import { Form, Input, Select, Button, message } from "antd";
-import { useState } from "react";
+import { Form, Input, Select, Button } from "antd";
+import { useState, useEffect } from "react";
+import { ClientService } from "../services/clientService";
+import { Client } from "@/types/Client";
+import { Toaster, toast } from "sonner";
 
 const { Option } = Select;
 
 export default function CreateUserPage() {
   const [loading, setLoading] = useState(false);
+  const [clients, setClients] = useState<Client[]>([]);
+
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        const clients = await ClientService.getAll();
+        setClients(clients);
+        console.log("Clientes carregados:", clients);
+      } catch (error) {
+        toast.error("Erro ao carregar clientes.");
+      }
+    };
+
+    fetchClients();
+  }, []);
 
   const handleFinish = async (values: any) => {
     setLoading(true);
+    console.log("Dados do formulário:", values);
     try {
-      const response = await fetch("/userCreation/api/create", {
+      const response = await fetch("/api/user/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -24,9 +43,9 @@ export default function CreateUserPage() {
         throw new Error(data.message || "Erro ao criar usuário.");
       }
 
-      message.success("Usuário criado com sucesso!");
+      toast.success("Usuário criado com sucesso!");
     } catch (err: any) {
-      message.error(err.message || "Erro ao criar usuário.");
+      toast.error(err.message || "Erro ao criar usuário.");
     } finally {
       setLoading(false);
     }
@@ -34,6 +53,7 @@ export default function CreateUserPage() {
 
   return (
     <div className="max-w-md mx-auto mt-8 p-6 bg-card dark:bg-card-dark rounded shadow">
+      <Toaster position="top-right" />
       <h2 className="text-lg font-semibold mb-4">Criar novo usuário</h2>
       <Form layout="vertical" onFinish={handleFinish}>
         <Form.Item name="name" label="Nome" rules={[{ required: true }]}>
@@ -52,6 +72,22 @@ export default function CreateUserPage() {
             <Option value={1}>Administrador</Option>
             <Option value={2}>Gerente</Option>
           </Select>
+        </Form.Item>
+        <Form.Item name="clientId" label="Cliente" rules={[{ required: true }]}>
+          <Select
+            showSearch
+            optionFilterProp="label"
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? "")
+                .toLowerCase()
+                .localeCompare((optionB?.label ?? "").toLowerCase())
+            }
+            style={{ width: "100%" }}
+            options={clients.map((client) => ({
+              value: client.idClient,
+              label: client.name,
+            }))}
+          />
         </Form.Item>
         <Form.Item>
           <Button htmlType="submit" type="primary" loading={loading}>

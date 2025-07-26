@@ -6,28 +6,24 @@ import { Resend } from "resend";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 
-const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_KEY);
+const roleTitles: Record<number, string> = {
+  0: "Operador",
+  1: "Administrador",
+  2: "Gerente",
+};
+
+const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_KEY ?? "");
 
 export async function POST(request: Request) {
-  console.log("request", request);
-  console.log("authOptions", authOptions);
   console.log("Iniciando criação de usuário...");
   const session = await getServerSession(authOptions);
-  console.log("session:", session);
   if (!session || session.user.role !== 1) {
     return NextResponse.json({ message: "Não autorizado" }, { status: 403 });
   }
 
   try {
     const { name, email, role, clientId } = await request.json();
-    console.log(name, email, role, clientId);
-    console.log("Dados recebidos do formulário:", {
-      name,
-      email,
-      role,
-      clientId,
-    });
-    if (!name || !email || typeof role !== "number") {
+    if (!name || !email || typeof role !== "number" || !clientId) {
       return NextResponse.json(
         { message: "Dados inválidos." },
         { status: 400 }
@@ -41,6 +37,12 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    await prisma.role.upsert({
+      where: { id: role },
+      update: {},
+      create: { id: role, title: roleTitles[role] || `Role ${role}` },
+    });
 
     console.log("Gerando senha temporária e criptografando...");
     const tempPassword = crypto
@@ -60,8 +62,8 @@ export async function POST(request: Request) {
     });
     console.log("Usuário criado com sucesso no banco:", user);
 
+    let emailSent = true;
     try {
-      console.log("Enviando e-mail de boas-vindas para:", email);
       await resend.emails.send({
         from: "no-reply@onresend.com",
         to: email,
@@ -76,14 +78,17 @@ export async function POST(request: Request) {
       });
     } catch (emailError) {
       console.error("Erro ao enviar o e-mail:", emailError);
-      return NextResponse.json(
-        { message: "Usuário criado, mas não foi possível enviar o e-mail." },
-        { status: 500 }
-      );
+      emailSent = false;
     }
 
     return NextResponse.json(
-      { id: user.id, name: user.name, email: user.email, role: user.role },
+      {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        emailSent,
+      },
       { status: 201 }
     );
   } catch (error) {

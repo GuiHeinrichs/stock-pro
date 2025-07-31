@@ -58,13 +58,14 @@ export default function CreateUserPage() {
     } catch (err: any) {
       toast.error(err.message || "Erro ao criar usuário.");
     } finally {
+      values = {};
       setLoading(false);
     }
   };
 
   return (
     <div className="max-w-md mx-auto mt-8 p-6 bg-card dark:bg-card-dark rounded shadow">
-      <Toaster position="top-right" />
+      <Toaster richColors position="top-right" />
       <h2 className="text-lg font-semibold mb-4">Criar novo usuário</h2>
       <Form layout="vertical" onFinish={handleFinish}>
         <Form.Item name="name" label="Nome" rules={[{ required: true }]}>

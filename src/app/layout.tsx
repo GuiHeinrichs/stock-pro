@@ -1,13 +1,7 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
 import ClientLayout from "./layouts/ClientLayout";
 import "antd/dist/reset.css";
 import "./globals.css";
-
-const poppins = Poppins({
-  weight: ["200", "400", "600", "800"],
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "StackPro",
@@ -21,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={poppins.className}>
+      <body>
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>

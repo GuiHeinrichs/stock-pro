@@ -32,6 +32,7 @@ const Categories = () => {
     const newCategory: Category = {
       id: categories.length + 1,
       title: newCategoryTitle || "Nova Categoria",
+      clientId: null,
     };
     const createCategory = async (category: Category) => {
       try {

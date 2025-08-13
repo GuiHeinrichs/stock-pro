@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import authOptions from "@/app/api/auth/authOptions";
 import PermissionsPanel from "./PermissionsPanel";
 import { UserRole } from "@/types/UserRole";
 

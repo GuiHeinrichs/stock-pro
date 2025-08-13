@@ -258,7 +258,7 @@ const Products = () => {
               style={{ width: 200 }}
             >
               {Array.isArray(categories) &&
-                categories.map((cat: Category) => (
+                categories?.map((cat: Category) => (
                   <Option key={cat.id} value={cat.id}>
                     {cat.title}
                   </Option>

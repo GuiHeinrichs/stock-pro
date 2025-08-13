@@ -112,7 +112,7 @@ const ProductModal = ({
                 onChange={(value) => handleInputChange("categoryId", value)}
                 loading={isLoadingCategories}
                 allowClear
-                options={(categories ?? []).map((category: Category) => ({
+                options={(categories?.length > 0 ? categories : []).map((category: Category) => ({
                   label: category.title,
                   value: category.id,
                 }))}
@@ -131,7 +131,7 @@ const ProductModal = ({
                 onChange={(value) => handleInputChange("supplierId", value)}
                 loading={isLoadingSuppliers}
                 allowClear
-                options={(suppliers ?? []).map((supplier: Supplier) => ({
+                options={(suppliers?.length > 0 ? suppliers : []).map((supplier: Supplier) => ({
                   label: supplier.name,
                   value: supplier.id,
                 }))}

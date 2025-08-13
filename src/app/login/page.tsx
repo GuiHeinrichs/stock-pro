@@ -23,8 +23,14 @@ export default function Login() {
       if (result?.error) {
         toast.error("Usuário ou senha incorretos.");
       } else {
-        window.location.href = result?.url || "/dashboard";
+        const check = await fetch("/api/user/reset-password");
+        const data = await check.json();
         toast.success("Login realizado com sucesso!");
+        if (data.resetPassword) {
+          window.location.href = "/reset-password";
+        } else {
+          window.location.href = result?.url || "/dashboard";
+        }
       }
     } catch (error) {
       toast.error("Erro ao fazer login. Por favor, tente novamente.");

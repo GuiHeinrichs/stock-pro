@@ -126,7 +126,7 @@ model User {
   password  String
   role      Int      @default(0)
   clientId  Int?
-  resetPassword Boolean @default(false)
+  resetPassword Boolean @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

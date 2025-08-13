@@ -9,6 +9,7 @@ export type User = {
   clientId: number;
   image?: string | null;
   role: number;
+  resetPassword: boolean;
   createdAt: Date;
   updatedAt: Date;
 

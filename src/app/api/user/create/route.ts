@@ -57,7 +57,7 @@ export async function POST(request: Request) {
         email,
         role,
         password: hashedPassword,
-        // resetPassword: true,
+        resetPassword: true,
         clientId,
       },
     });

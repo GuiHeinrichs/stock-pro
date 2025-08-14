@@ -50,7 +50,8 @@ const Products = () => {
         ValidityMessageValidation(successData, messageApi);
         setProducts((prev) => prev.filter((p) => p.id !== toDeleteProduct.id));
       }
-    } catch (error) {
+    } catch (error: unknown) {
+      console.error("Erro ao remover produto:", error);
       const errorData: ValidityMessage = {
         type: "error",
         content: "Erro ao remover Produto.",
@@ -165,7 +166,7 @@ const Products = () => {
     {
       title: "Ações",
       key: "actions",
-      render: (_: any, record: Product) => (
+      render: (_: unknown, record: Product) => (
         <div className="flex justify-center gap-2">
           <Tooltip color="#F1592A" title="Visualizar">
             <Button

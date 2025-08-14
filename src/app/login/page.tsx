@@ -13,6 +13,7 @@ export default function Login() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
+      console.log("Attempting to sign in with:", { email, password });
       const result = await signIn("credentials", {
         redirect: false,
         callbackUrl: "/dashboard",

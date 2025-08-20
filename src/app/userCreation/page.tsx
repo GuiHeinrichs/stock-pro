@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { ClientService } from "../services/clientService";
 import { Client } from "@/types/Client";
 import { Toaster, toast } from "sonner";
+import { User } from "@/types/User";
 
 const { Option } = Select;
 
@@ -16,8 +17,8 @@ export default function CreateUserPage() {
       try {
         const clients = await ClientService.getAll();
         setClients(clients);
-        console.log("Clientes carregados:", clients);
-      } catch (error) {
+      } catch (error: unknown) {
+        console.error("Erro ao carregar clientes:", error);
         toast.error("Erro ao carregar clientes.");
       }
     };
@@ -25,9 +26,8 @@ export default function CreateUserPage() {
     fetchClients();
   }, []);
 
-  const handleFinish = async (values: any) => {
+  const handleFinish = async (values: User) => {
     setLoading(true);
-    console.log("Dados do formulário:", values);
     try {
       const payload = {
         ...values,
@@ -55,10 +55,10 @@ export default function CreateUserPage() {
       } else {
         toast.success("Usuário criado com sucesso!");
       }
-    } catch (err: any) {
-      toast.error(err.message || "Erro ao criar usuário.");
+    } catch (err: unknown) {
+      toast.error((err as Error).message || "Erro ao criar usuário.");
     } finally {
-      values = {};
+      values = {} as User;
       setLoading(false);
     }
   };

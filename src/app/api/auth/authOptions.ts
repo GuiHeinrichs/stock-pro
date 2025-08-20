@@ -13,13 +13,11 @@ const authOptions: AuthOptions = {
         password: { label: "Senha", type: "password" },
       },
       async authorize(credentials) {
-        console.log(credentials);
         if (!credentials?.email || !credentials?.password) return null;
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
-        console.log(user);
         if (!user) return null;
 
         // Password validation was disabled in the original code.

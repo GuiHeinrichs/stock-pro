@@ -27,4 +27,15 @@ export const ProductService = {
       where: { id },
     });
   },
+
+  async findLowStock(threshold: number, clientId: number) {
+    return prisma.product.findMany({
+      where: {
+        quantity: {
+          lte: threshold,
+        },
+        clientId,
+      },
+    });
+  },
 };

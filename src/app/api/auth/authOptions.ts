@@ -28,6 +28,7 @@ const authOptions: AuthOptions = {
           name: user.name,
           email: user.email,
           role: Number(user.role),
+          clientId: user.clientId ?? null,
         };
       },
     }),
@@ -39,11 +40,14 @@ const authOptions: AuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.role = user.role;
+        token.clientId = (user as any).clientId;
       }
       return token;
     },
     async session({ session, token }) {
       if (token?.role !== undefined) session.user.role = token.role as number;
+      if (token?.clientId !== undefined)
+        session.user.clientId = token.clientId as number;
       return session;
     },
   },

@@ -26,9 +26,21 @@ import {
 
 import DashboardCard from "@/app/components/DashboardCard";
 import { useDashboardData } from "@/app/hooks/dashboard/useDashboardData";
+import { useSession } from "next-auth/react";
+import useSWR from "swr";
+import type { Notification } from "@/app/services/notificationService";
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Dashboard() {
   const { data } = useDashboardData();
+  const { data: session } = useSession();
+  const clientId = session?.user?.clientId;
+  const { data: notifications } = useSWR<Notification[]>(
+    clientId ? `/api/notifications?clientId=${clientId}` : null,
+    fetcher,
+    { refreshInterval: 30000 }
+  );
 
   const recentMovements = data?.recentMovements ?? [];
   const weeklyData = data?.weeklyData ?? [];
@@ -48,6 +60,18 @@ export default function Dashboard() {
 
   return (
     <main className="py-4 px-4 md:px-10 xl:px-20 space-y-8 bg-background dark:bg-background-dark min-h-screen">
+      {notifications && notifications.length > 0 && (
+        <section>
+          <div className="bg-red-100 border border-red-300 text-red-800 rounded-lg p-4 mb-4">
+            <h2 className="font-bold mb-2">Alertas de Estoque</h2>
+            <ul className="list-disc ml-5">
+              {notifications.map((n) => (
+                <li key={n.id}>{n.message}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
       {/* KPIs Bento */}
       <section>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-8">

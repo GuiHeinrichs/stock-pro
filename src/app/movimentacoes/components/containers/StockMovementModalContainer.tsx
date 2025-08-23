@@ -19,12 +19,10 @@ interface Props {
   onUpdateFinish?: () => void;
 }
 
-// ====== ADJUSTED: include clientId because StockMovement requires it ======
 const initialMovement: StockMovement = {
   productId: 0,
   type: "in",
   quantity: 1,
-  clientId: 0, // <--- adiciona clientId para evitar TS2741
 };
 
 export default function StockMovementModalContainer({
@@ -71,20 +69,16 @@ export default function StockMovementModalContainer({
   };
 
   const createMovement = async () => {
-    /*productId Int
-    clientId  Int?
-    type      String // "in" para entrada, "out" para saída
-    quantity  Int
-    date      DateTime @default(now())
-    userId    Int*/
-    console.log('createMovement', movement);
-    console.log('useSession', session);
-    //const {clientId,}
+    const payload = {
+      ...movement,
+      clientId: session.data?.user.clientId,
+      userId: Number(session.data?.user.id),
+    };
     try {
       const response = await fetch("/estoque/api/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(movement),
+        body: JSON.stringify(payload),
       });
       if (!response.ok) {
         const errorData: ValidityMessage = {

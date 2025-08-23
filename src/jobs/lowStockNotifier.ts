@@ -14,6 +14,7 @@ async function checkLowStock() {
       await NotificationService.send(
         client.idClient,
         product.id,
+        product.name,
         `Produto ${product.name} com estoque baixo: ${product.quantity}`
       );
     }

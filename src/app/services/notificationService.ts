@@ -1,5 +1,6 @@
 export type Notification = {
   id: number;
+  productDescription: string;
   productId: number;
   message: string;
   createdAt: Date;
@@ -9,10 +10,11 @@ const notifications = new Map<number, Notification[]>();
 let nextId = 1;
 
 export const NotificationService = {
-  async send(clientId: number, productId: number, message: string) {
+  async send(clientId: number, productId: number, productDescription: string, message: string) {
     const notification: Notification = {
       id: nextId++,
       productId,
+      productDescription,
       message,
       createdAt: new Date(),
     };
@@ -20,7 +22,6 @@ export const NotificationService = {
     list.push(notification);
     notifications.set(clientId, list);
 
-    console.log(`Notification sent to client ${clientId}: ${message}`);
     return notification;
   },
 

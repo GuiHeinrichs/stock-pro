@@ -1,9 +1,9 @@
 "use client";
-import { Bell, Search, Sun, PanelLeft, Moon } from "lucide-react";
+import { Bell, Search, PanelLeft } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { useDarkMode } from "../hooks/useDarkMode";
+//import { useDarkMode } from "../hooks/useDarkMode";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import useSWR from "swr";
 import type { Notification } from "@/app/services/notificationService";
 
@@ -14,11 +14,23 @@ type HeaderProps = {
 };
 
 export default function Header({ onMenuClick }: HeaderProps) {
+  //const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const routerPath = usePathname();
   const pathname =
     routerPath.replace("/", "").charAt(0).toUpperCase() + routerPath.slice(2);
   const isForbiddenPage = routerPath === "/403";
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
   const { data: session } = useSession();
   const clientId = session?.user?.clientId;
   const { data: notifications } = useSWR<Notification[]>(
@@ -58,22 +70,33 @@ export default function Header({ onMenuClick }: HeaderProps) {
                 /
               </kbd>
             </div>
-            <div className="relative">
+            <div className="relative" ref={dropdownRef}>
               <button onClick={() => setOpen((o) => !o)} className="relative">
                 <Bell className="w-5 h-5 text-foreground hover:text-primary transition-all cursor-pointer ease-in hover:-translate-y-[0.1rem]" />
                 {notifications && notifications.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1">
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 animate-pulse">
                     {notifications.length}
                   </span>
                 )}
               </button>
-              {open && notifications && notifications.length > 0 && (
-                <div className="absolute right-0 mt-2 w-64 bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded shadow-lg max-h-60 overflow-y-auto">
-                  {notifications.map((n) => (
-                    <div key={n.id} className="p-2 text-sm border-b last:border-none">
-                      {n.message}
-                    </div>
-                  ))}
+
+              {open && (
+                <div className="absolute right-0 mt-2 w-72 bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-xl shadow-lg max-h-80 overflow-y-auto z-50">
+                  {!notifications ? (
+                    <div className="p-4 text-sm text-muted dark:text-muted-dark">Carregando...</div>
+                  ) : notifications.length === 0 ? (
+                    <div className="p-4 text-sm text-muted dark:text-muted-dark">Nenhuma notificação</div>
+                  ) : (
+                    notifications.map((n) => (
+                      <div
+                        key={n.id}
+                        className="p-3 text-sm border-b last:border-none cursor-pointer hover:bg-muted/20 dark:hover:bg-muted-dark/30 transition-colors"
+                      >
+                        <p className="font-medium text-foreground dark:text-foreground-dark">{`${n.productDescription}`}</p>
+                        <p className="text-xs text-muted dark:text-muted-dark">{`${n.message} itens`}</p>
+                      </div>
+                    ))
+                  )}
                 </div>
               )}
             </div>

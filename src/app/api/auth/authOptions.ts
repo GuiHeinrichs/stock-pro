@@ -22,7 +22,7 @@ const authOptions: AuthOptions = {
 
         // Password validation was disabled in the original code.
         // Re-enable with bcrypt if password hashing is in use.
-
+        console.log('credentials', user);
         return {
           id: user.id.toString(),
           name: user.name,

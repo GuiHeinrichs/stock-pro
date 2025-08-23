@@ -7,10 +7,10 @@ export type StockMovementModalProps = {
   movement: StockMovement;
   products: Product[];
   isLoadingProducts: boolean;
-  handleInputChange: (field: string, value: any) => void;
+  handleInputChange: (field: string, value: unknown) => void;
   handleOk: () => void;
   handleCancel: () => void;
-  validateRequiredInputs: (value: any) => "success" | "error" | "validating";
+  validateRequiredInputs: (value: unknown) => "success" | "error" | "validating";
   modalMode: import("./ModalMode").ModalMode;
   selectedMovement: StockMovement | null;
 };

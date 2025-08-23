@@ -7,6 +7,7 @@ import { ValidityMessageValidation } from "@/app/lib/createValidityMessage";
 import { MessageInstance } from "antd/es/message/interface";
 import { ModalMode } from "@/types/ModalMode";
 import { useProducts } from "@/app/hooks/products/useProducts";
+import { useSession } from "next-auth/react";
 
 interface Props {
   isOpen: boolean;
@@ -18,10 +19,12 @@ interface Props {
   onUpdateFinish?: () => void;
 }
 
+// ====== ADJUSTED: include clientId because StockMovement requires it ======
 const initialMovement: StockMovement = {
   productId: 0,
   type: "in",
   quantity: 1,
+  clientId: 0, // <--- adiciona clientId para evitar TS2741
 };
 
 export default function StockMovementModalContainer({
@@ -35,7 +38,7 @@ export default function StockMovementModalContainer({
 }: Props) {
   const [isModalLoading, setIsModalLoading] = useState(false);
   const [movement, setMovement] = useState<StockMovement>(initialMovement);
-
+  const session = useSession();
   const { data: products = [], isLoading: isLoadingProducts } = useProducts();
 
   useEffect(() => {
@@ -44,18 +47,22 @@ export default function StockMovementModalContainer({
     }
   }, [modalMode, selectedMovement]);
 
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = (field: string, value: unknown) => {
     setMovement((prev) => ({ ...prev, [field]: value }));
   };
 
-  const validateRequiredInputs = (value: any) => {
+  const validateRequiredInputs = (value: unknown): "error" | "success" => {
     if (value === undefined || value === "" || value === null) return "error";
     return "success";
   };
 
   const handleOk = () => {
     setIsModalLoading(true);
-    modalMode === ModalMode.CREATE ? createMovement() : updateMovement();
+    if (modalMode === ModalMode.CREATE) {
+      createMovement();
+    } else {
+      updateMovement();
+    }
   };
 
   const handleCancel = () => {
@@ -64,6 +71,15 @@ export default function StockMovementModalContainer({
   };
 
   const createMovement = async () => {
+    /*productId Int
+    clientId  Int?
+    type      String // "in" para entrada, "out" para saída
+    quantity  Int
+    date      DateTime @default(now())
+    userId    Int*/
+    console.log('createMovement', movement);
+    console.log('useSession', session);
+    //const {clientId,}
     try {
       const response = await fetch("/estoque/api/create", {
         method: "POST",
@@ -121,7 +137,8 @@ export default function StockMovementModalContainer({
         setIsModalLoading(false);
         return;
       }
-      const data = await response.json();
+      // ====== ADJUSTED: don't create an unused `data` variable; just await the json (or, if you need it, use it) ======
+      await response.json();
       const successData: ValidityMessage = {
         type: "success",
         content: "Movimentação atualizada com sucesso.",

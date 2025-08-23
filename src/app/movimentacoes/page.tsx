@@ -55,7 +55,8 @@ export default function Movements() {
             ValidityMessageValidation(successData, messageApi);
             setMovements((prev) => prev.filter((m) => m.id !== movement.id));
           }
-        } catch (error) {
+        } catch (error: unknown) {
+          console.error(error instanceof Error ? error.message : 'Erro desconhecido');
           const errorData: ValidityMessage = {
             type: "error",
             content: "Erro ao remover movimentação.",
@@ -89,7 +90,7 @@ export default function Movements() {
     {
       title: "Ações",
       key: "actions",
-      render: (_: any, record: StockMovement) => (
+      render: (_: unknown, record: StockMovement) => (
         <div className="flex justify-center gap-2">
           <Tooltip color="#F1592A" title="Visualizar">
             <Button

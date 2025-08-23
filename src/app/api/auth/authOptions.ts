@@ -22,7 +22,6 @@ const authOptions: AuthOptions = {
 
         // Password validation was disabled in the original code.
         // Re-enable with bcrypt if password hashing is in use.
-        console.log('credentials', user);
         return {
           id: user.id.toString(),
           name: user.name,
@@ -39,12 +38,19 @@ const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = user.role;
-        token.clientId = (user as any).clientId;
+        const { id, role, clientId } = user as {
+          id: string;
+          role: number;
+          clientId?: number;
+        };
+        token.id = id;
+        token.role = role;
+        token.clientId = clientId;
       }
       return token;
     },
     async session({ session, token }) {
+      if (token?.id !== undefined) session.user.id = token.id as string;
       if (token?.role !== undefined) session.user.role = token.role as number;
       if (token?.clientId !== undefined)
         session.user.clientId = token.clientId as number;

@@ -1,8 +1,38 @@
 import { prisma } from "@/app/lib/prisma";
+import { Prisma } from "@prisma/client";
 
 export const StockMovementService = {
-  async create(data: any) {
-    return prisma.stockMovement.create({ data });
+  async create(data: Prisma.StockMovementCreateInput) {
+    const { productId, type, quantity } = data;
+
+    return prisma.$transaction(async (tx) => {
+      const product = await tx.product.findUnique({
+        where: { id: productId },
+      });
+
+      if (!product) {
+        throw new Error("Produto não encontrado.");
+      }
+
+      if (type === "out" && product.quantity < quantity) {
+        throw new Error("Quantidade insuficiente em estoque.");
+      }
+
+      const movement = await tx.stockMovement.create({ data });
+
+      await tx.product.update({
+        where: { id: productId },
+        data: {
+          quantity: {
+            ...(type === "in"
+              ? { increment: quantity }
+              : { decrement: quantity }),
+          },
+        },
+      });
+
+      return movement;
+    });
   },
 
   async findAll() {
@@ -19,7 +49,7 @@ export const StockMovementService = {
     });
   },
 
-  async update(id: number, data: any) {
+  async update(id: number, data: Prisma.StockMovementUpdateInput) {
     return prisma.stockMovement.update({
       where: { id },
       data,

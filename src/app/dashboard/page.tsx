@@ -36,7 +36,6 @@ export default function Dashboard() {
   const { data } = useDashboardData();
   const { data: session } = useSession();
   const clientId = session?.user?.clientId;
-  console.log('<insert> clientId', clientId);
   const { data: notifications } = useSWR<Notification[]>(
     clientId ? `/api/notifications?clientId=${clientId}` : null,
     fetcher,

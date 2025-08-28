@@ -5,7 +5,6 @@ import SessionAuth from "@/app/lib/sessionAuth";
 export async function POST(request: Request) {
   await SessionAuth();
   try {
-    // Parse request body only once to avoid "Body has already been read" errors
     const data = await request.json();
     const { productId, type, quantity } = data;
 

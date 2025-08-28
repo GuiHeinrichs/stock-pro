@@ -1,5 +1,5 @@
 "use client";
-import { Bell, Search, PanelLeft } from "lucide-react";
+import { Bell, Trash, Search, PanelLeft } from "lucide-react";
 import { usePathname } from "next/navigation";
 //import { useDarkMode } from "../hooks/useDarkMode";
 import { useSession } from "next-auth/react";
@@ -33,12 +33,23 @@ export default function Header({ onMenuClick }: HeaderProps) {
   const isForbiddenPage = routerPath === "/403";
   const { data: session } = useSession();
   const clientId = session?.user?.clientId;
-  const { data: notifications } = useSWR<Notification[]>(
+
+  // useSWR com default para array e mutate para atualizar cache local
+  const { data: notifications = [], mutate } = useSWR<Notification[]>(
     clientId ? `/api/notifications?clientId=${clientId}` : null,
     fetcher,
     { refreshInterval: 30000 }
   );
+
   const [open, setOpen] = useState(false);
+
+  // remove apenas no front-end (atualiza cache SWR localmente, sem revalidação)
+  const handleNotificationRemove = (id: number) => {
+    // cria novo array sem o item (NÃO muta o array original)
+    const updated = notifications.filter((notification) => notification.id !== id);
+    // atualiza cache local do SWR sem revalidar (false = no re-fetch)
+    mutate(updated, false);
+  };
 
   return (
     <header
@@ -90,8 +101,19 @@ export default function Header({ onMenuClick }: HeaderProps) {
                     notifications.map((n) => (
                       <div
                         key={n.id}
-                        className="p-3 text-sm border-b last:border-none cursor-pointer hover:bg-muted/20 dark:hover:bg-muted-dark/30 transition-colors"
+                        className="p-3 text-sm border-gray-700 border-b last:border-none cursor-pointer hover:bg-muted/20 dark:hover:bg-muted-dark/30 transition-colors"
+                        onMouseDown={(e) => e.stopPropagation()} //evita fechar lista apos click
                       >
+                        <div className="flex justify-end">
+                          <button
+                            onMouseDown={(e) => e.stopPropagation()} //evita fechar lista apos click
+                            onClick={() => {
+                              handleNotificationRemove(n.id);
+                            }}
+                          >
+                           <Trash className="w-4 h-4 text-red-700 hover:text-red-950 transition-all cursor-pointer ease-in hover:-translate-y-[0.1rem]"/>
+                          </button>
+                        </div>
                         <p className="font-medium text-foreground dark:text-foreground-dark">{`${n.productDescription}`}</p>
                         <p className="text-xs text-muted dark:text-muted-dark">{`${n.message} itens`}</p>
                       </div>
@@ -105,7 +127,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                 <Sun className="w-5 h-5 text-foregroundSec dark:text-foregroundSec-dark hover:text-primary transition-all cursor-pointer ease-in hover:-translate-y-[0.1rem]" />
               ) : (
                 <Moon className="w-5 h-5 text-foregroundSec dark:text-foregroundSec-dark hover:text-primary transition-all cursor-pointer ease-in hover:-translate-y-[0.1rem]" />
-              )}
+              )} 
             </button> */}
           </div>
         </>

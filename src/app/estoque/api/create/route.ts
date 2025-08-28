@@ -21,9 +21,12 @@ export async function POST(request: Request) {
     return NextResponse.json(movement, { status: 201 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json(
-      { message: "Erro ao criar movimentação." },
-      { status: 500 }
-    );
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Erro ao criar movimentação.";
+    const status = error instanceof Error ? 400 : 500;
+
+    return NextResponse.json({ message }, { status });
   }
 }

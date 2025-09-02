@@ -32,7 +32,7 @@ export const ProductService = {
     return prisma.product.findMany({
       where: {
         quantity: {
-          lte: threshold,
+          lt: threshold,
         },
         clientId,
       },

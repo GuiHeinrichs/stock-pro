@@ -44,6 +44,7 @@ model Product {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  StockMovementAudit StockMovementAudit[]
   Category      Category?       @relation(fields: [categoryId], references: [id])
   Supplier      Supplier?       @relation(fields: [supplierId], references: [id])
   StockMovement StockMovement[]
@@ -106,17 +107,20 @@ model SupplierInfo {
 }
 
 model StockMovement {
+  @@map("stock_movement")
+
   id        Int      @id @default(autoincrement())
-  productId Int
-  clientId  Int?
-  type      String // "in" para entrada, "out" para saída
+  productId Int      @map("product_id")
+  clientId  Int?     @map("client_id")
+  type      String
   quantity  Int
   date      DateTime @default(now())
-  userId    Int
+  userId    Int      @map("user_id")
 
+  StockMovementAudit StockMovementAudit[]
   User    User    @relation(fields: [userId], references: [id])
   Product Product @relation(fields: [productId], references: [id])
-  Client  Client?  @relation(fields: [clientId], references: [idClient])
+  Client  Client? @relation(fields: [clientId], references: [idClient])
 }
 
 model User {
@@ -130,6 +134,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  StockMovementAudit StockMovementAudit[]
   Role          Role            @relation(fields: [role], references: [id])
   StockMovement StockMovement[]
   Client        Client?          @relation(fields: [clientId], references: [idClient])
@@ -151,4 +156,23 @@ model Role {
 
   User   User[]
   Client Client? @relation(fields: [clientId], references: [idClient])
+}
+
+model StockMovementAudit {
+  @@map("stock_movement_audit")
+
+  id           BigInt   @id @default(autoincrement())
+  movementId   Int?     @map("movement_id")
+  productId    Int?     @map("product_id")
+  userId       Int?     @map("user_id")
+  action       String
+  oldQuantity  Int?     @map("old_quantity")
+  newQuantity  Int?     @map("new_quantity")
+  oldLocation  String?  @map("old_location")
+  newLocation  String?  @map("new_location")
+  createdAt    DateTime @default(now()) @db.Timestamp(6) @map("created_at")
+
+  movement  StockMovement? @relation(fields: [movementId], references: [id])
+  product   Product?       @relation(fields: [productId], references: [id])
+  user      User?          @relation(fields: [userId], references: [id])
 }

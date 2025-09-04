@@ -1,20 +1,10 @@
 import { prisma } from "@/app/lib/prisma";
 import { NextResponse } from "next/server";
 import SessionAuth from "@/app/lib/sessionAuth";
-import { getServerSession } from "next-auth";
-import authOptions from "@/app/api/auth/authOptions";
 
 export async function PUT(request: Request) {
   await SessionAuth();
   try {
-    const session = await getServerSession(authOptions);
-    if (!session || !session.user?.clientId) {
-      return NextResponse.json(
-        { message: "Sessão inválida ou cliente não identificado." },
-        { status: 401 }
-      );
-    }
-    const clientId = Number(session.user.clientId);
     const {
       id,
       name,
@@ -52,7 +42,6 @@ export async function PUT(request: Request) {
         description,
         categoryId,
         supplierId,
-        clientId,
         createdAt: createdAt ? new Date(createdAt) : undefined,
         updatedAt: updatedAt ? new Date(updatedAt) : undefined,
         ProductDetail: {
@@ -66,7 +55,6 @@ export async function PUT(request: Request) {
               color: ProductDetail?.color,
               material: ProductDetail?.material,
               additionalInfo: ProductDetail?.additionalInfo,
-              clientId,
             },
           },
         },

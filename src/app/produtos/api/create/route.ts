@@ -1,12 +1,23 @@
 import { prisma } from "@/app/lib/prisma";
 import { NextResponse } from "next/server";
 import SessionAuth from "@/app/lib/sessionAuth";
+import { getServerSession } from "next-auth";
+import authOptions from "@/app/api/auth/authOptions";
 
 export async function POST(request: Request) {
   await SessionAuth();
 
   try {
     const data = await request.json();
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user?.clientId) {
+      return NextResponse.json(
+        { message: "Sessão inválida ou cliente não identificado." },
+        { status: 401 }
+      );
+    }
+
+    const clientId = Number(session.user.clientId);
     const product = await prisma.product.create({
       data: {
         name: data.name,
@@ -18,8 +29,14 @@ export async function POST(request: Request) {
         quantity: data.quantity,
         categoryId: data.categoryId,
         supplierId: data.supplierId,
+        clientId,
         ProductDetail: {
-          create: data.ProductDetail,
+          create: data.ProductDetail
+            ? {
+                ...data.ProductDetail,
+                clientId,
+              }
+            : undefined,
         },
       },
     });

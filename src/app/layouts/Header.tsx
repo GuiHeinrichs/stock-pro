@@ -1,5 +1,5 @@
 "use client";
-import { Bell, Trash, Search, PanelLeft } from "lucide-react";
+import { Bell, Trash, Search, PanelLeftOpen, PanelLeftClose } from "lucide-react";
 import { usePathname } from "next/navigation";
 //import { useDarkMode } from "../hooks/useDarkMode";
 import { useSession } from "next-auth/react";
@@ -42,6 +42,12 @@ export default function Header({ onMenuClick }: HeaderProps) {
   );
 
   const [open, setOpen] = useState(false);
+  const [openSideBar, setOpenSideBar] = useState(false);
+
+  const handleSideBarToggle = (open: boolean) => {
+    onMenuClick();
+    setOpenSideBar(open);
+  };
 
   // remove apenas no front-end (atualiza cache SWR localmente, sem revalidação)
   const handleNotificationRemove = (id: number) => {
@@ -62,8 +68,12 @@ export default function Header({ onMenuClick }: HeaderProps) {
       ) : (
         <>
           <div className="flex justify-start items-center gap-8 text-sm">
-            <button onClick={onMenuClick}>
-              <PanelLeft className="w-5 h-5 text-foreground hover:text-primary transition-all cursor-pointer ease-in hover:-translate-y-[0.1rem]" />
+            <button onClick={() => handleSideBarToggle(!openSideBar)}>
+              {!openSideBar ? (
+                <PanelLeftClose className="w-5 h-5 text-foreground hover:text-primary transition-all cursor-pointer ease-in hover:-translate-y-[0.1rem]" />
+              ) : (
+                <PanelLeftOpen className="w-5 h-5 text-foreground hover:text-primary transition-all cursor-pointer ease-in hover:-translate-y-[0.1rem]" />
+              )}
             </button>
             <span className="text-lg font-semibold text-center text-foreground hover:bg-border dark:hover:bg-border-dark px-4 py-2 rounded-2xl transition-all hover:translate-x-0.5 ease-linear">
               {pathname}

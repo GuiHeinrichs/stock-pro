@@ -152,11 +152,15 @@ export default function Dashboard() {
             Produto em Destaque
           </h2>
           <p className="text-2xl font-bold text-primary mb-1">
-            {topProducts[0]?.name ?? "-"}
+            {topProducts[0]?.name ?? "Nenhum produto"}
           </p>
-          {topProducts[0] && (
+          {topProducts[0] ? (
             <span className="text-foregroundSec dark:text-foregroundSec-dark">
               Movimentado {topProducts[0].movimentado}x na semana
+            </span>
+          ) : (
+            <span className="text-foregroundSec dark:text-foregroundSec-dark">
+              Não há dados para exibir
             </span>
           )}
         </div>
@@ -219,10 +223,11 @@ export default function Dashboard() {
 
         {/* Top Produtos Movimentados (Bar Chart vertical) */}
         <div className="bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-2xl p-6 shadow-md col-span-2">
-          <h2 className="text-lg font-bold text-foreground dark:text-foreground-dark mb-4">
+          <h2 className="text-lg font-bold text-foreground dark:text-foreground-dark">
             Top Produtos Movimentados
           </h2>
-          <ResponsiveContainer width="100%" height={250}>
+          {topProducts.length ? (
+            <ResponsiveContainer width="100%" height={250}>
             <BarChart
               data={topProducts}
               layout="vertical"
@@ -235,6 +240,11 @@ export default function Dashboard() {
               <Bar dataKey="movimentado" fill="#F1592A" />
             </BarChart>
           </ResponsiveContainer>
+          ) : (
+            <span className="flex justify-center items-center h-full text-4xl font-semibold text-primary dark:text-foregroundSec-dark">
+              Não há dados para exibir
+            </span>
+          )}
         </div>
       </section>
 
@@ -244,7 +254,8 @@ export default function Dashboard() {
           <h2 className="text-lg font-bold mb-4 text-foreground dark:text-foreground-dark">
             Últimas Movimentações
           </h2>
-          <table className="w-full text-sm text-left">
+          {recentMovements.length ? (
+            <table className="w-full text-sm text-left">
             <thead>
               <tr className="text-foregroundSec dark:text-foregroundSec-dark border-b border-border dark:border-border-dark">
                 <th className="py-2">Produto</th>
@@ -268,6 +279,11 @@ export default function Dashboard() {
               ))}
             </tbody>
           </table>
+          ) : (
+            <span className="flex justify-center items-center h-full text-2xl my-10 font-semibold text-primary dark:text-foregroundSec-dark">
+              Nenhuma movimentação recente
+            </span>
+          )}
         </div>
       </section>
     </main>

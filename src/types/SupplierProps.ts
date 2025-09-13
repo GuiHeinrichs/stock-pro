@@ -1,4 +1,4 @@
-import { Supplier, SupplierInfo } from "./Supplier";
+import { Supplier } from "./Supplier";
 
 export type SupplierModalProps = {
   isModalOpen: boolean;
@@ -7,7 +7,7 @@ export type SupplierModalProps = {
   handleInputChange: (field: string, value: any) => void;
   handleOk: () => void;
   handleCancel: () => void;
-  validateRequiredInputs: (value: any) => "success" | "error" | "validating";
+  validateRequiredInputs: (value: unknown) => "error" | "success" | undefined;
   modalMode: import("./ModalMode").ModalMode;
   selectedSupplier: Supplier | null;
 };

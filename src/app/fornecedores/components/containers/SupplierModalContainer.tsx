@@ -6,6 +6,7 @@ import { ValidityMessage } from "@/types/ValidityMessage";
 import { ValidityMessageValidation } from "@/app/lib/createValidityMessage";
 import { MessageInstance } from "antd/es/message/interface";
 import { ModalMode } from "@/types/ModalMode";
+import { supplierSchema } from "@/app/validations";
 
 interface Props {
   isOpen: boolean;
@@ -47,7 +48,7 @@ export default function SupplierModalContainer({
       setSupplier(selectedSupplier);
     }
   }, [modalMode, selectedSupplier]);
-
+  
   const handleInputChange = (field: string, value: any) => {
     if (field === "supplierInfo") {
       setSupplier((prev) => ({ ...prev, supplierInfo: value }));
@@ -56,14 +57,29 @@ export default function SupplierModalContainer({
     }
   };
 
-  const validateRequiredInputs = (value: any) => {
+  const validateRequiredInputs = (value: unknown) => {
     if (value === undefined || value === "" || value === null) return "error";
     return "success";
   };
 
   const handleOk = () => {
+    validateSupplier();
     setIsModalLoading(true);
-    modalMode === ModalMode.CREATE ? createSupplier() : updateSupplier();
+    if (modalMode === ModalMode.CREATE) {
+      createSupplier();
+    } else {
+      updateSupplier();
+    }
+  };
+
+  const validateSupplier = () => {
+    const parseResult = supplierSchema.safeParse(supplier);
+    if (!parseResult.success) {
+      parseResult.error.issues.forEach((error) => {
+        messageApi.error(error.message);
+      });
+      return;
+    }
   };
 
   const handleCancel = () => {

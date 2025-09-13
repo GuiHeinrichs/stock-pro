@@ -54,7 +54,10 @@ export default function Suppliers() {
             ValidityMessageValidation(successData, messageApi);
             setSuppliers((prev) => prev.filter((s) => s.id !== toDelete.id));
           }
-        } catch (error) {
+        } catch (error: unknown) {
+          console.error(
+            error instanceof Error ? error.message : "Erro ao remover fornecedor."
+          );
           const errorData: ValidityMessage = {
             type: "error",
             content: "Erro ao remover fornecedor.",
@@ -105,7 +108,7 @@ export default function Suppliers() {
     {
       title: "Contato Principal",
       key: "contact",
-      render: (_: any, record: Supplier) => (
+      render: (_: unknown, record: Supplier) => (
         <span>
           {record.mainContactName}{" "}
           {record.mainContactPhone && ` - ${record.mainContactPhone}`}{" "}
@@ -117,7 +120,7 @@ export default function Suppliers() {
     {
       title: "Produtos",
       key: "products",
-      render: (_: any, record: Supplier) => (
+      render: (_: unknown, record: Supplier) => (
         <div className="flex flex-wrap gap-1">
           {record.products && record.products.length > 0
             ? record.products.map((product) => (
@@ -130,7 +133,7 @@ export default function Suppliers() {
     {
       title: "Ações",
       key: "actions",
-      render: (_: any, record: Supplier) => (
+      render: (_: unknown, record: Supplier) => (
         <div className="flex justify-center gap-2">
           <Tooltip color="#F1592A" title="Visualizar">
             <Button
